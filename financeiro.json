@@ -1,0 +1,111 @@
+{
+  "configuracoes": {
+    "moeda": "BRL",
+    "saldoInicial": 0,
+    "mesAtual": 6,
+    "anoAtual": 2026,
+    "creditoMensalDisponivel": 1800.0,
+    "saldoBancoBrasilAtual": 8.72,
+    "versaoBase": "credito-v7"
+  },
+  "cartaoCredito": {
+    "banco": "nubank",
+    "nome": "Nubank Crédito",
+    "diaFechamento": 5,
+    "diaVencimento": 12,
+    "limiteMensal": 1800.0,
+    "regraCompetencia": "Compras realizadas entre os dias 01 e 04 entram na fatura do mês anterior. Compras realizadas a partir do dia 05 entram na fatura do mês da compra.",
+    "regraVencimento": "Toda fatura vence no dia 12 do mês seguinte à competência.",
+    "regraPagamento": "Quando uma fatura é marcada como paga, ela sai de Crédito em aberto e o saldo do limite daquela competência volta a considerar o limite mensal disponível."
+  },
+  "faturasCredito": [
+    {
+      "id": "fat_2026-06_inicial",
+      "mesCredito": "2026-06",
+      "competencia": "2026-06-01",
+      "nome": "Crédito Junho de 2026",
+      "vencimento": "2026-07-12",
+      "valorInicial": 2726.48,
+      "status": "Pendente",
+      "origem": "Crédito em aberto antes do início do controle"
+    }
+  ],
+  "categorias": {
+    "receitas": [
+      "Matizes Dumont",
+      "Freelas",
+      "Empréstimo",
+      "Doação Familiar"
+    ],
+    "despesas": [
+      "Mercado",
+      "Comida",
+      "Higiene",
+      "Lazer",
+      "Luz",
+      "Internet"
+    ]
+  },
+  "contas": [
+    "Nubank",
+    "Banco do Brasil",
+    "Inter"
+  ],
+  "lancamentos": [],
+  "gastosEssenciais": [
+    {
+      "nome": "Compras básicas semanais",
+      "valor": 200,
+      "frequencia": "Semanal",
+      "multiplicadorMensal": 4.33,
+      "categoria": "Mercado"
+    },
+    {
+      "nome": "Água",
+      "valor": 0,
+      "frequencia": "Mensal",
+      "multiplicadorMensal": 1,
+      "categoria": "Água"
+    },
+    {
+      "nome": "Energia",
+      "valor": 0,
+      "frequencia": "Mensal",
+      "multiplicadorMensal": 1,
+      "categoria": "Luz"
+    },
+    {
+      "nome": "Internet",
+      "valor": 0,
+      "frequencia": "Mensal",
+      "multiplicadorMensal": 1,
+      "categoria": "Internet"
+    },
+    {
+      "nome": "MEI",
+      "valor": 0,
+      "frequencia": "Mensal",
+      "multiplicadorMensal": 1,
+      "categoria": "Impostos"
+    },
+    {
+      "nome": "Empréstimos",
+      "valor": 0,
+      "frequencia": "Mensal",
+      "multiplicadorMensal": 1,
+      "categoria": "Empréstimo"
+    }
+  ],
+  "metadadosImportacao": {
+    "geradoEm": "2026-06-29",
+    "versao": "credito-v7",
+    "observacoes": [
+      "R$ 2.726,48 agora entra como fatura inicial pendente de Crédito Junho de 2026.",
+      "Limite mensal de crédito configurado em R$ 1.800,00.",
+      "Como a fatura inicial de junho é R$ 2.726,48, o saldo do limite de junho começa em -R$ 926,48.",
+      "Fechamento do crédito no dia 05: compras de 01 a 04 entram na fatura do mês anterior, compras de 05 em diante entram na fatura do mês da compra.",
+      "Vencimento das faturas sempre no dia 12 do mês seguinte.",
+      "Quando a fatura é marcada como paga, ela sai de Crédito em aberto."
+    ]
+  }
+}

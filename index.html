@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Controle Financeiro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- LOGIN -->
+  <main id="login" class="login">
+    <form id="loginForm" class="card login-card">
+      <div class="login-logo">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="36" height="36" rx="10" fill="var(--primary)"/>
+          <path d="M10 22 L18 12 L26 22" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M14 26 L18 20 L22 26" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <span>Controle Financeiro</span>
+      </div>
+      <p class="login-sub">Relatório mensal com filtros</p>
+      <div class="field-group">
+        <label for="user">Usuário</label>
+        <input id="user" placeholder="seu usuário" autocomplete="username" required>
+      </div>
+      <div class="field-group">
+        <label for="pass">Senha</label>
+        <input id="pass" type="password" placeholder="••••••" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn-primary btn-full">Entrar</button>
+      <small class="login-hint">Login inicial: Léo / 2104</small>
+    </form>
+  </main>
+
+  <!-- APP -->
+  <main id="app" class="app hidden">
+
+    <header class="app-header">
+      <div class="header-brand">
+        <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="36" height="36" rx="10" fill="var(--primary)"/>
+          <path d="M10 22 L18 12 L26 22" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <path d="M14 26 L18 20 L22 26" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <span class="header-title">Controle Financeiro</span>
+      </div>
+      <button id="logout" class="btn-ghost btn-sm">Sair</button>
+    </header>
+
+    <nav class="app-nav">
+      <button data-tab="dashboard" class="nav-btn active">Dashboard</button>
+      <button data-tab="lancamentos" class="nav-btn">Lançamentos</button>
+      <button data-tab="categorias" class="nav-btn">Categorias</button>
+      <button data-tab="relatorio" class="nav-btn">Relatório</button>
+      <button data-tab="backup" class="nav-btn">Backup</button>
+    </nav>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard" class="tab active">
+      <div class="tab-inner">
+        <div id="cards" class="metric-grid"></div>
+        <div id="creditoCalendario" class="card credit-calendar"></div>
+      </div>
+    </section>
+
+    <!-- LANÇAMENTOS -->
+    <section id="lancamentos" class="tab">
+      <div class="tab-inner">
+
+        <div id="creditoEmAbertoLancamentos" class="card credit-open-section"></div>
+
+        <div class="card form-card">
+          <div class="form-header">
+            <h2 class="form-title" id="formTitle">Novo lançamento</h2>
+            <button type="button" id="cancelEdit" class="btn-ghost btn-sm hidden">Cancelar edição</button>
+          </div>
+
+          <form id="form">
+            <input type="hidden" id="id">
+
+            <!-- Bloco 1: O quê e quando -->
+            <div class="form-section">
+              <span class="form-section-label">O quê e quando</span>
+              <div class="form-row-3">
+                <div class="field-group">
+                  <label for="data">Data</label>
+                  <input id="data" type="date" required>
+                </div>
+                <div class="field-group">
+                  <label for="tipo">Tipo</label>
+                  <select id="tipo">
+                    <option>Receita</option>
+                    <option>Despesa</option>
+                  </select>
+                </div>
+                <div class="field-group">
+                  <label for="status">Status</label>
+                  <select id="status">
+                    <option>Pago</option>
+                    <option>Recebido</option>
+                    <option>Pendente</option>
+                    <option>Atrasado</option>
+                    <option>Cancelado</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-row-2">
+                <div class="field-group field-span-2">
+                  <label for="descricao">Descrição</label>
+                  <input id="descricao" placeholder="Ex: Freelance design, Aluguel, Supermercado…" required>
+                </div>
+                <div class="field-group">
+                  <label for="categoriasLanc">Categorias</label>
+                  <input id="categoriasLanc" placeholder="Ex: design, moradia" required>
+                  <span class="field-hint">Separe por vírgula</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bloco 2: Conta e banco -->
+            <div class="form-section">
+              <span class="form-section-label">Conta e origem</span>
+              <div class="form-row-3">
+                <div class="field-group">
+                  <label for="banco">Banco / Instituição</label>
+                  <select id="banco">
+                    <option value="">Selecione…</option>
+                    <option value="nubank">Nubank</option>
+                    <option value="bb">Banco do Brasil</option>
+                    <option value="inter">Inter</option>
+                  </select>
+                </div>
+                <div class="field-group">
+                  <label for="tipoConta">Tipo de conta</label>
+                  <select id="tipoConta">
+                    <option value="corrente">Corrente</option>
+                    <option value="poupanca">Poupança</option>
+                    <option value="credito">Crédito</option>
+                    <option value="carteira">Carteira digital</option>
+                    <option value="outro">Outro</option>
+                  </select>
+                </div>
+                <div class="field-group">
+                  <label for="canal">Canal / Origem</label>
+                  <input id="canal" placeholder="Ex: cliente, salário, loja…">
+                </div>
+              </div>
+            </div>
+
+            <!-- Bloco 3: Pagamento e valor -->
+            <div class="form-section">
+              <span class="form-section-label">Pagamento</span>
+              <div class="form-row-3">
+                <div class="field-group">
+                  <label for="forma">Forma de pagamento</label>
+                  <select id="forma">
+                    <option>Pix</option>
+                    <option>Dinheiro</option>
+                    <option>Cartão de débito</option>
+                    <option>Cartão de crédito</option>
+                    <option>Boleto</option>
+                    <option>Transferência</option>
+                    <option>Outro</option>
+                  </select>
+                </div>
+                <div class="field-group">
+                  <label for="parcelas">Parcelas</label>
+                  <input id="parcelas" placeholder="Ex: 2/6 ou À vista">
+                </div>
+                <div class="field-group">
+                  <label for="valor">Valor (R$)</label>
+                  <input id="valor" type="number" step="0.01" min="0" placeholder="0,00" required class="input-valor">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary" id="btnSalvar">Salvar lançamento</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Tabela -->
+        <div class="card table-wrap">
+          <div class="table-header">
+            <h2 class="form-title">Lançamentos</h2>
+            <div class="table-filters">
+              <select id="tFiltroTipo" class="select-sm">
+                <option value="">Todos</option>
+                <option value="Receita">Receitas</option>
+                <option value="Despesa">Despesas</option>
+              </select>
+              <select id="tFiltroStatus" class="select-sm">
+                <option value="">Todos os status</option>
+                <option>Pago</option>
+                <option>Recebido</option>
+                <option>Pendente</option>
+                <option>Atrasado</option>
+                <option>Cancelado</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Tipo</th>
+                  <th>Descrição</th>
+                  <th>Categoria</th>
+                  <th>Conta</th>
+                  <th>Canal</th>
+                  <th>Status</th>
+                  <th class="col-valor">Valor</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="linhas"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CATEGORIAS -->
+    <section id="categorias" class="tab">
+      <div class="tab-inner">
+        <div class="card">
+          <form id="catForm" class="form-row-3-inline">
+            <div class="field-group field-span-2">
+              <label for="catNome">Nome da categoria</label>
+              <input id="catNome" placeholder="Ex: alimentação, transporte…">
+            </div>
+            <div class="field-group">
+              <label for="catTipo">Tipo</label>
+              <select id="catTipo">
+                <option value="receitas">Receita</option>
+                <option value="despesas">Despesa</option>
+              </select>
+            </div>
+            <div class="field-group field-action">
+              <label>&nbsp;</label>
+              <button type="submit" class="btn-primary">Adicionar categoria</button>
+            </div>
+          </form>
+        </div>
+        <div id="catList" class="card cat-list-wrap"></div>
+      </div>
+    </section>
+
+    <!-- RELATÓRIO -->
+    <section id="relatorio" class="tab">
+      <div class="tab-inner">
+        <div class="card filters-bar">
+          <div class="filters-grid">
+            <div class="field-group">
+              <label>Mês</label>
+              <select id="fMes"></select>
+            </div>
+            <div class="field-group">
+              <label>Ano</label>
+              <input id="fAno" type="number" placeholder="2025">
+            </div>
+            <div class="field-group">
+              <label>Categoria</label>
+              <select id="fCategoria"></select>
+            </div>
+            <div class="field-group">
+              <label>Banco</label>
+              <select id="fBanco"></select>
+            </div>
+            <div class="field-group">
+              <label>Canal</label>
+              <select id="fCanal"></select>
+            </div>
+            <div class="field-group">
+              <label>Status</label>
+              <select id="fStatus">
+                <option value="">Todos os status</option>
+                <option>Pago</option>
+                <option>Recebido</option>
+                <option>Pendente</option>
+                <option>Atrasado</option>
+                <option>Cancelado</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div id="relCards" class="metric-grid"></div>
+        <div id="relTabelas" class="card"></div>
+      </div>
+    </section>
+
+    <!-- BACKUP -->
+    <section id="backup" class="tab">
+      <div class="tab-inner">
+        <div class="card backup-card">
+          <h2 class="form-title">Exportar dados</h2>
+          <p class="muted">Faça backup completo ou exporte o relatório filtrado.</p>
+          <div class="backup-actions">
+            <button id="exportJson" class="btn-secondary">Exportar backup JSON</button>
+            <button id="exportCsv" class="btn-secondary">Exportar relatório CSV</button>
+          </div>
+          <hr class="divider">
+          <h2 class="form-title">Importar dados</h2>
+          <p class="muted">Selecione um arquivo .json gerado por esta ferramenta.</p>
+          <label class="file-label">
+            <span>Escolher arquivo JSON</span>
+            <input id="importJson" type="file" accept=".json,application/json">
+          </label>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
