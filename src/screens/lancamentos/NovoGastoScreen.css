@@ -1,0 +1,13 @@
+.novo-gasto-tela { display: flex; flex-direction: column; gap: 16px; max-width: 520px; }
+.novo-gasto-header { display: flex; align-items: center; gap: 10px; }
+.novo-gasto-form { display: flex; flex-direction: column; gap: 14px; }
+.novo-gasto-valor { font-family: var(--font-heading); font-size: 28px; text-align: left; }
+.novo-gasto-valor:focus-visible { border-color: var(--color-accent); }
+.novo-gasto-categoria-linha { display: flex; gap: 8px; align-items: center; }
+.novo-gasto-categoria-linha select, .novo-gasto-categoria-linha .input { flex: 1; }
+
+.novo-gasto-previa { display: flex; flex-direction: column; gap: 8px; background: var(--color-surface); border-radius: var(--radius-card); padding: 14px 16px; }
+.novo-gasto-previa-header { display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 600; }
+.novo-gasto-previa-linha { display: flex; align-items: center; gap: 10px; font-size: 13px; padding: 6px 0; border-top: 1px solid var(--color-divider); }
+
+.novo-gasto-erro { background: #fdece8; color: #a3341f; border-radius: var(--radius-md); padding: 10px 14px; font-size: 13px; }

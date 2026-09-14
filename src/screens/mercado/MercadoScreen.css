@@ -1,0 +1,2 @@
+.mercado-tela { display: flex; flex-direction: column; gap: 16px; }
+.mercado-lista-listas { display: flex; flex-direction: column; gap: 9px; margin-top: 6px; }

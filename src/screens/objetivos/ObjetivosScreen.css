@@ -1,0 +1,2 @@
+.objetivos-tela { display: flex; flex-direction: column; gap: 16px; }
+.objetivos-lista { display: flex; flex-direction: column; gap: 9px; }

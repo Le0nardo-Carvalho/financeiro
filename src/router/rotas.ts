@@ -1,0 +1,17 @@
+export const rotas = {
+  acesso: '/acesso',
+  dashboard: '/',
+  lancamentos: '/lancamentos',
+  novoLancamento: '/lancamentos/novo',
+  lancamento: (id: string) => `/lancamentos/${id}`,
+  categorias: '/categorias',
+  categoria: (id: string) => `/categorias/${id}`,
+  cartoes: '/cartoes',
+  novoCartao: '/cartoes/novo',
+  cartao: (id: string) => `/cartoes/${id}`,
+  mercado: '/mercado',
+  listaMercado: (id: string) => `/mercado/${id}`,
+  objetivos: '/objetivos',
+  objetivo: (id: string) => `/objetivos/${id}`,
+  ajustes: '/ajustes',
+} as const

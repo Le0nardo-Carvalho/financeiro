@@ -1,0 +1,60 @@
+.dash { display: flex; flex-direction: column; gap: 16px; position: relative; flex: 1; }
+
+.dash-header { display: flex; align-items: center; gap: 8px; }
+.dash-mes-seletor {
+  width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--color-surface);
+  display: grid; place-items: center; cursor: pointer; color: var(--color-text); flex: none;
+}
+.dash-mes-label { font-family: var(--font-heading); font-size: 19px; }
+.dash-header-fim { margin-left: auto; }
+
+.dash-atalhos { display: flex; flex-direction: column; gap: 9px; width: 100%; margin-top: 6px; }
+
+.dash-grid-topo { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.dash-total-card { gap: 14px; }
+.dash-total-valor { font-family: var(--font-heading); font-size: 40px; line-height: 1; }
+.dash-barra-composicao { display: flex; gap: 5px; height: 8px; }
+.dash-barra-composicao span { border-radius: 99px; }
+.dash-composicao-legenda { display: flex; justify-content: space-between; font-size: 12px; opacity: 0.9; flex-wrap: wrap; gap: 4px; }
+
+.dash-fatura-card, .dash-objetivo-card { justify-content: space-between; }
+.dash-fatura-topo { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--color-neutral-700); }
+.dash-fatura-valor { font-family: var(--font-heading); font-size: 26px; }
+.dash-fatura-situacao { font-size: 11.5px; color: var(--color-neutral-700); }
+.dash-fatura-link { font-size: 12px; color: var(--color-accent-700); text-decoration: none; }
+.dash-objetivo-pct { font-family: var(--font-heading); font-size: 26px; }
+
+.dash-grid-meio { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.dash-categorias-card, .dash-recentes-card { min-height: 0; }
+
+.dash-recentes-header { display: flex; align-items: baseline; justify-content: space-between; }
+.dash-recentes-lista { display: flex; flex-direction: column; }
+.dash-recente-linha {
+  display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 10px 0;
+  border-bottom: 1px solid var(--color-divider); flex-wrap: wrap;
+}
+.dash-recente-linha:last-child { border-bottom: none; }
+.dash-recente-data { color: var(--color-neutral-700); width: 44px; flex: none; }
+.dash-recente-desc { flex: 1; font-weight: 600; min-width: 120px; }
+.dash-recente-cat { display: flex; align-items: center; gap: 6px; color: var(--color-neutral-700); font-size: 12.5px; }
+.dash-recente-pagamento { color: var(--color-neutral-700); font-size: 12px; }
+.dash-recente-valor { font-family: var(--font-heading); font-size: 15px; margin-left: auto; }
+
+.dash-fab {
+  position: fixed; left: 50%; bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--color-accent); color: var(--color-bg); border: none;
+  border-radius: 999px; padding: 12px 22px; font-family: var(--font-heading); font-size: 15px;
+  box-shadow: var(--shadow-md); cursor: pointer; z-index: 15;
+}
+
+@media (min-width: 1024px) {
+  .dash-grid-topo { grid-template-columns: 1.35fr 1fr 1fr; }
+  .dash-grid-meio { grid-template-columns: 1fr 1.4fr; flex: 1; min-height: 0; }
+  .dash-categorias-card, .dash-recentes-card { overflow: hidden; }
+  .dash-recentes-lista { overflow-y: auto; }
+  .dash-fab { position: static; transform: none; margin-left: auto; }
+  .dash-header { position: relative; }
+  .dash-header-fim { display: flex; align-items: center; gap: 14px; }
+}

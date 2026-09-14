@@ -1,0 +1,23 @@
+.lanc-tela { display: flex; flex-direction: column; gap: 14px; }
+.lanc-header { display: flex; align-items: center; justify-content: space-between; }
+.lanc-titulo { font-family: var(--font-heading); font-size: 26px; }
+.lanc-mes-seletor { display: flex; align-items: center; gap: 8px; }
+
+.lanc-busca-linha { display: flex; gap: 8px; align-items: center; }
+.lanc-busca-campo { position: relative; flex: 1; }
+.lanc-busca-icone { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--color-neutral-600); }
+.lanc-busca-campo .input { padding-left: 40px; }
+
+.lanc-filtros { display: flex; flex-direction: column; gap: 8px; }
+@media (min-width: 640px) { .lanc-filtros { flex-direction: row; } }
+
+.lanc-lista { display: flex; flex-direction: column; gap: 2px; }
+.lanc-item {
+  display: flex; align-items: center; gap: 12px; padding: 12px 4px;
+  border-bottom: 1px solid var(--color-divider); text-decoration: none; color: inherit; min-height: 44px;
+}
+.lanc-item-cor { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.lanc-item-corpo { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.lanc-item-desc { font-weight: 600; font-size: 14.5px; }
+.lanc-item-meta { font-size: 12px; color: var(--color-neutral-700); }
+.lanc-item-valor { font-family: var(--font-heading); font-size: 16px; flex: none; }

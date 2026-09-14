@@ -1,0 +1,21 @@
+.donut-wrap { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+
+.donut-circulo {
+  width: 132px; height: 132px; flex: none; border-radius: 50%;
+  display: grid; place-items: center;
+}
+.donut-centro {
+  width: 80px; height: 80px; border-radius: 50%; background: var(--color-surface);
+  display: grid; place-items: center; text-align: center; line-height: 1.2;
+}
+.donut-centro-numero { display: block; font-family: var(--font-heading); font-size: 17px; }
+.donut-centro-legenda { display: block; font-size: 10px; color: var(--color-neutral-600); }
+
+.donut-lista { list-style: none; margin: 0; padding: 0; flex: 1; min-width: 180px; display: flex; flex-direction: column; gap: 9px; font-size: 13px; }
+.donut-linha { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; }
+.donut-linha-botao { background: none; border: none; padding: 4px 2px; cursor: pointer; border-radius: 8px; color: inherit; min-height: 32px; }
+.donut-linha-botao:hover { background: color-mix(in srgb, var(--color-text) 6%, transparent); }
+.donut-cor { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.donut-nome { flex: 1; }
+.donut-valor { font-weight: 600; }
+.donut-pct { width: 38px; text-align: right; color: var(--color-neutral-600); font-size: 11.5px; }
