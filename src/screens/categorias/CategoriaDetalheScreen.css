@@ -1,0 +1,6 @@
+.cat-detalhe-tela { display: flex; flex-direction: column; gap: 16px; }
+.cat-detalhe-totais { display: flex; gap: 12px; flex-wrap: wrap; }
+.cat-detalhe-total-card { flex: 1; min-width: 140px; background: var(--color-surface); border-radius: var(--radius-card); padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; }
+.cat-detalhe-total-valor { font-family: var(--font-heading); font-size: 24px; }
+.cat-detalhe-evolucao { display: flex; flex-direction: column; gap: 2px; margin-top: 6px; }
+.cat-detalhe-evolucao-linha { display: flex; align-items: center; gap: 10px; font-size: 13px; padding: 8px 4px; border-bottom: 1px solid var(--color-divider); }
