@@ -7,8 +7,13 @@ import { createClient } from '@supabase/supabase-js'
 // src/types/database.ts documentam o formato das linhas e são usados via
 // `as X` nos hooks de src/lib/queries — a fonte de verdade do schema é
 // supabase/migrations/0001_initial.sql.
-const url = import.meta.env.VITE_SUPABASE_URL as string | undefined
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined
+// Secrets do GitHub Actions que não existem viram string vazia ("") na
+// action, não `undefined` — por isso o fallback abaixo usa `||`, não `??`:
+// `?? padrao` não cai no padrão para "", só para null/undefined, e
+// createClient("", "") lança "supabaseUrl is required" e derruba o app
+// inteiro (tela em branco) antes do React conseguir renderizar qualquer coisa.
+const url = (import.meta.env.VITE_SUPABASE_URL as string) || undefined
+const anonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY as string) || undefined
 
 // Configuração pendente fora do repositório (04-publicacao-github-pages.md):
 // URL do projeto e chave publicável (anon) precisam vir de variáveis de
