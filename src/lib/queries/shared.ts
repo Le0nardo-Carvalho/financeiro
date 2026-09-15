@@ -34,5 +34,13 @@ export function useGravacao() {
 
 export function mensagemDeErro(erro: unknown): string {
   if (erro instanceof Error) return erro.message
+  // Erros do PostgREST/Supabase às vezes chegam como objeto simples
+  // ({ message, details, hint, code }), sem passar por `instanceof Error`
+  // (ex.: quando vêm de uma resposta serializada). Extrai a mensagem real
+  // em vez de esconder atrás do texto genérico.
+  if (erro && typeof erro === 'object' && 'message' in erro && typeof erro.message === 'string' && erro.message) {
+    return erro.message
+  }
+  console.error('Erro sem mensagem legível:', erro)
   return 'Ocorreu um erro inesperado. Tente novamente.'
 }
