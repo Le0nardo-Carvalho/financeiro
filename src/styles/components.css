@@ -1,30 +1,42 @@
-/* Primitivas reconstruídas a partir dos tokens do Organic DS (não é cópia dos
-   protótipos — ver README.md "Sobre os arquivos de design"). */
+/* Primitivas reconstruídas a partir de tokens.css (identidade 2: berinjela,
+   coral, lilás). Não é cópia da prancheta — ver README.md "Sobre os arquivos
+   de design". Nenhuma cor fixa aqui: tudo sai das variáveis. */
 
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px;
   cursor: pointer; text-decoration: none; border: 1px solid transparent;
   font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  font-size: 14px; line-height: 1.2; color: var(--color-text);
+  font-size: 15px; line-height: 1.2; color: var(--color-text);
   background: transparent; padding: 12px 22px; border-radius: var(--radius-pill);
   min-height: 44px;
 }
 .btn svg { display: block; flex: none; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
-.btn-primary { background: var(--color-accent); color: var(--color-bg); box-shadow: var(--shadow-md); }
+.btn-primary { background: var(--color-accent); color: var(--color-bg); }
 .btn-primary:hover:not(:disabled) { background: var(--color-accent-600); }
 .btn-primary:active:not(:disabled) { background: var(--color-accent-700); }
 .btn-secondary { border-color: var(--color-divider); background: var(--color-surface); }
-.btn-secondary:hover:not(:disabled) { background: color-mix(in srgb, var(--color-text) 7%, var(--color-surface)); }
-.btn-ghost { color: var(--color-accent-700); padding-inline: var(--space-2); background: transparent; min-height: auto; }
-.btn-ghost:hover:not(:disabled) { background: color-mix(in srgb, var(--color-accent) 10%, transparent); }
+.btn-secondary:hover:not(:disabled) { background: var(--color-neutral-100); }
+.btn-contorno { border: 1.5px solid var(--color-neutral-200); background: transparent; }
+.btn-contorno:hover:not(:disabled) { background: var(--color-surface); }
+/* Ação destrutiva confirmada (Cancelar compra, Desfazer, Excluir): pêssego
+   claro com texto berinjela — chama atenção sem usar o coral de "ação". */
+.btn-perigo { background: var(--color-accent-800); color: var(--color-bg); }
+.btn-perigo:hover:not(:disabled) { background: var(--color-accent-900); }
+.btn-ghost { color: var(--color-accent-600); padding-inline: var(--space-2); background: transparent; min-height: auto; border: none; cursor: pointer; font: inherit; }
+.btn-ghost:hover:not(:disabled) { background: var(--color-accent-100); }
 .btn-icon { width: 44px; height: 44px; padding: 0; }
 .btn-block { width: 100%; }
-.btn-danger { color: #a3341f; }
+.btn-danger { color: var(--color-accent-700); }
+
+.btn-voltar {
+  width: 40px; height: 40px; border-radius: 50%; border: none; background: var(--color-surface);
+  display: grid; place-items: center; cursor: pointer; color: var(--color-text); flex: none;
+}
 
 .field { display: flex; flex-direction: column; gap: 5px; }
-.field > label { font-size: 12px; color: color-mix(in srgb, var(--color-text) 70%, transparent); }
-.field-error { font-size: 12px; color: #a3341f; }
+.field > label { font-size: 12px; color: var(--color-neutral-700); }
+.field-error { font-size: 12px; color: var(--color-accent-700); }
 
 .input {
   width: 100%; min-height: 46px; padding: 10px 16px; font: inherit; font-size: 15px;
@@ -32,18 +44,51 @@
   background: var(--color-surface); border: 1px solid var(--color-divider);
   border-radius: var(--radius-pill);
 }
-.input:hover { border-color: color-mix(in srgb, var(--color-text) 45%, transparent); }
+.input:hover { border-color: var(--color-neutral-400); }
 .input:focus-visible { border-color: var(--color-accent); outline-offset: 0; }
-.input.input-invalid { border-color: #a3341f; }
+.input.input-invalid { border-color: var(--color-accent-400); }
 textarea.input { min-height: 90px; border-radius: var(--radius-md); resize: vertical; }
+select.input { appearance: none; background-image: none; }
 
 .seg { display: inline-flex; overflow: hidden; border: 1px solid var(--color-divider); border-radius: var(--radius-pill); }
 .seg-opt {
-  display: inline-flex; align-items: center; gap: 6px; padding: 11px 16px;
-  font-size: 13.5px; cursor: pointer; min-height: 44px; background: var(--color-surface);
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 11px 16px;
+  font-size: 13.5px; cursor: pointer; min-height: 44px; background: var(--color-surface); flex: 1;
 }
 .seg-opt + .seg-opt { border-left: 1px solid var(--color-divider); }
 .seg-opt-ativo { background: var(--color-accent); color: var(--color-bg); }
+
+/* Pílulas de escolha única (meio de pagamento, tela 1f). */
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip-opcao {
+  font-size: 12.5px; padding: 7px 14px; min-height: 36px; border-radius: var(--radius-pill);
+  background: var(--color-surface); border: none; cursor: pointer; color: var(--color-text);
+}
+.chip-opcao-ativo { background: var(--color-accent); color: var(--color-bg); }
+
+/* Opção de rádio em pílula (motivo do cancelamento, tela 1p). */
+.opcao-radio {
+  display: flex; align-items: center; gap: 11px; width: 100%; text-align: left; cursor: pointer;
+  background: var(--color-surface); border: 1px solid var(--color-divider); border-radius: var(--radius-pill);
+  padding: 11px 16px; font-size: 13.5px; color: var(--color-text); min-height: 44px;
+}
+.opcao-radio-marca { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--color-neutral-400); flex: none; display: grid; place-items: center; }
+.opcao-radio-ativa { border-color: var(--color-accent); }
+.opcao-radio-ativa .opcao-radio-marca { border-color: var(--color-accent); }
+.opcao-radio-ativa .opcao-radio-marca::after { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--color-accent); }
+
+/* Interruptor (Levar os itens para a próxima lista). */
+.interruptor {
+  width: 46px; height: 28px; border-radius: var(--radius-pill); background: var(--color-neutral-300);
+  position: relative; flex: none; border: none; cursor: pointer; padding: 0;
+  transition: background 180ms cubic-bezier(.2,.8,.2,1);
+}
+.interruptor::after {
+  content: ''; position: absolute; left: 3px; top: 3px; width: 22px; height: 22px; border-radius: 50%;
+  background: var(--color-bg); transition: transform 180ms cubic-bezier(.2,.8,.2,1);
+}
+.interruptor[aria-checked='true'] { background: var(--color-accent-2-600); }
+.interruptor[aria-checked='true']::after { transform: translateX(18px); }
 
 .card { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-4); border-radius: var(--radius-card); background: var(--color-surface); }
 .card-destaque { background: var(--color-accent-800); color: var(--color-bg); }
@@ -51,67 +96,97 @@ textarea.input { min-height: 90px; border-radius: var(--radius-md); resize: vert
 .elev-md { box-shadow: var(--shadow-md); }
 .elev-lg { box-shadow: var(--shadow-lg); }
 
-.tag { display: inline-flex; align-items: center; font-size: 11px; letter-spacing: 0.02em; padding: 3px 10px; border-radius: var(--radius-pill); }
-.tag-accent { background: var(--color-accent-100); color: var(--color-accent-800); }
-.tag-accent-2 { background: var(--color-accent-2-100); color: var(--color-accent-2-800); }
-.tag-neutral { background: var(--color-neutral-100); color: var(--color-neutral-800); }
+.tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; letter-spacing: 0.02em; padding: 3px 10px; border-radius: var(--radius-pill); }
+.tag-accent { background: var(--color-accent-200); color: var(--color-accent-800); }
+.tag-accent-2 { background: var(--color-accent-2-300); color: var(--color-accent-2-800); }
+.tag-neutral { background: var(--color-neutral-200); color: var(--color-neutral-800); }
+
+/* Selo de situação da fatura: Paga (lilás), Parcialmente paga (coral),
+   Aberta (neutro). */
+.selo { display: inline-flex; align-items: center; gap: 5px; border-radius: var(--radius-pill); padding: 7px 13px; font-size: 12.5px; font-weight: 700; white-space: nowrap; }
+.selo-paga { background: var(--color-accent-2-300); color: var(--color-accent-2-800); }
+.selo-parcial { background: var(--color-accent-200); color: var(--color-accent-800); }
+.selo-aberta { background: var(--color-neutral-200); color: var(--color-neutral-800); }
+
+/* Chip comparativo com o mês anterior: gastou menos = lilás, seta para
+   baixo; gastou mais = coral, seta para cima. */
+.chip-comp { display: inline-flex; align-items: center; gap: 4px; border-radius: var(--radius-pill); padding: 4px 10px; font-size: 12px; font-weight: 700; }
+.chip-comp-menor { background: var(--color-accent-2-300); color: var(--color-accent-2-800); }
+.chip-comp-maior { background: var(--color-accent-200); color: var(--color-accent-800); }
 
 .dialog-backdrop, .sheet-backdrop {
   position: fixed; inset: 0; z-index: 40; display: flex;
-  background: color-mix(in srgb, var(--color-neutral-900) 45%, transparent);
+  background: var(--scrim);
 }
-.dialog-backdrop { place-items: center; padding: var(--space-4); }
+.dialog-backdrop { place-items: center; align-items: center; justify-content: center; padding: var(--space-4); }
 .sheet-backdrop { align-items: flex-end; justify-content: center; }
 
 .dialog {
   width: min(440px, 100%); display: flex; flex-direction: column; gap: var(--space-3);
   padding: var(--space-4); border-radius: calc(var(--radius-lg) * 1.15);
-  background: var(--color-surface); box-shadow: var(--shadow-lg);
+  background: var(--color-bg); box-shadow: var(--shadow-lg);
 }
 .sheet {
   width: 100%; max-width: 480px; max-height: 88vh; overflow-y: auto;
-  display: flex; flex-direction: column; gap: var(--space-3);
-  padding: var(--space-4) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom, 0px));
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 14px 20px calc(26px + env(safe-area-inset-bottom, 0px));
   border-radius: var(--radius-sheet-top) var(--radius-sheet-top) 0 0;
-  background: var(--color-surface); box-shadow: var(--shadow-lg);
+  background: var(--color-bg); box-shadow: var(--shadow-lg);
   animation: sheet-in 180ms cubic-bezier(.2,.8,.2,1);
 }
+.sheet::before { content: ''; width: 44px; height: 4px; border-radius: 99px; background: var(--color-neutral-400); align-self: center; flex: none; }
 @media (prefers-reduced-motion: reduce) { .sheet { animation: none; } }
 @keyframes sheet-in { from { transform: translateY(24px); opacity: 0.6; } to { transform: translateY(0); opacity: 1; } }
+@media (min-width: 1024px) {
+  .sheet-backdrop { align-items: center; }
+  .sheet { border-radius: var(--radius-sheet-top); }
+}
 
-.dialog-title, .sheet-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 20px; }
-.sheet-aviso { background: var(--color-accent-2-100); color: var(--color-accent-2-800); border-radius: var(--radius-md); padding: var(--space-3); font-size: 12.5px; line-height: 1.5; display: flex; gap: 10px; }
+.dialog-title, .sheet-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 22px; line-height: 1.2; }
+.sheet-subtitulo { display: block; font-size: 12px; color: var(--color-neutral-700); margin-top: 2px; }
+.sheet-aviso { background: var(--color-accent-2-100); color: var(--color-accent-2-800); border-radius: 22px; padding: 11px 15px; font-size: 12px; line-height: 1.5; display: flex; gap: 10px; }
+.aviso-coral { background: var(--color-accent-100); color: var(--color-accent-900); border-radius: 22px; padding: 11px 14px; font-size: 12px; line-height: 1.5; display: flex; gap: 10px; }
 .dialog-actions, .sheet-actions { display: flex; justify-content: flex-end; gap: var(--space-2); margin-top: var(--space-2); }
+.sheet-actions-lado { display: flex; gap: 9px; align-items: center; }
+.sheet-actions-lado > .btn { flex: 1; }
+.sheet-actions-lado > .btn:last-child { flex: 1.5; white-space: nowrap; padding-inline: 14px; }
 
-.status-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; }
+.status-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; }
 .status-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
 .status-atualizado { color: var(--color-accent-2-700); } .status-atualizado .status-dot { background: var(--color-accent-2-500); }
 .status-salvando { color: var(--color-neutral-700); } .status-salvando .status-dot { background: var(--color-neutral-500); animation: pulse 1s ease-in-out infinite; }
-.status-erro { color: #a3341f; } .status-erro .status-dot { background: #a3341f; }
+.status-erro { color: var(--color-accent-700); } .status-erro .status-dot { background: var(--color-accent-400); }
 .status-offline { color: var(--color-neutral-700); } .status-offline .status-dot { background: var(--color-neutral-600); }
 @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
 
 .offline-banner {
   display: flex; align-items: center; gap: 10px; padding: 12px 18px;
-  background: var(--color-neutral-900); color: var(--color-neutral-100);
+  background: var(--color-neutral-100); color: var(--color-neutral-900);
   font-size: 12.5px; line-height: 1.4;
 }
 
+.erro-banner { background: var(--color-accent-200); border: 1px solid var(--color-accent-400); color: var(--color-accent-900); border-radius: var(--radius-card); padding: 12px 16px; font-size: 13px; line-height: 1.5; }
+
 .empty-state { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 22px 6px 6px; }
-.empty-state-icon { width: 132px; height: 132px; border-radius: 50%; background: var(--color-accent-200); display: grid; place-items: center; }
+.empty-state-icon { width: 132px; height: 132px; border-radius: 50%; background: var(--color-accent-200); display: grid; place-items: center; color: var(--color-accent-600); }
 .empty-state-icon-inner { width: 82px; height: 82px; border-radius: 50%; background: var(--color-bg); display: grid; place-items: center; }
-.empty-state-title { font-family: var(--font-heading); font-size: 22px; }
+.empty-state-title { font-family: var(--font-heading); font-size: 24px; }
 .empty-state-desc { font-size: 13px; line-height: 1.55; color: var(--color-neutral-700); margin-top: 6px; }
 
-.atalho-card { background: var(--color-surface); border-radius: var(--radius-card); padding: 14px 16px; display: flex; align-items: center; gap: 12px; text-align: left; border: none; cursor: pointer; width: 100%; }
+.atalho-card { background: var(--color-surface); color: var(--color-text); border-radius: var(--radius-card); padding: 14px 16px; display: flex; align-items: center; gap: 12px; text-align: left; border: none; cursor: pointer; width: 100%; text-decoration: none; }
 .atalho-icone { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; flex: none; }
+.atalho-icone-coral { background: var(--color-accent-200); color: var(--color-accent-700); }
+.atalho-icone-lilas { background: var(--color-accent-2-200); color: var(--color-accent-2-700); }
+.atalho-icone-neutro { background: var(--color-neutral-200); color: var(--color-neutral-800); }
 .atalho-titulo { display: block; font-size: 14px; font-weight: 600; }
 .atalho-desc { display: block; font-size: 11.5px; color: var(--color-neutral-700); }
 
 .hr { height: 1px; border: 0; margin: 0; background: var(--color-divider); }
-.text-muted { color: color-mix(in srgb, var(--color-text) 55%, transparent); }
-.kicker { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-neutral-600); }
+.text-muted { color: var(--color-neutral-600); }
+.kicker { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-neutral-600); }
+.secao-titulo { font-family: var(--font-heading); font-size: 16px; }
+.link-acao { font-size: 12px; color: var(--color-accent-600); text-decoration: none; background: none; border: none; padding: 0; cursor: pointer; }
 
-.progress-bar-track { height: 6px; border-radius: var(--radius-pill); background: var(--color-accent-2-200); overflow: hidden; }
+.progress-bar-track { height: 8px; border-radius: var(--radius-pill); background: var(--color-accent-2-200); overflow: hidden; }
 .progress-bar-fill { height: 100%; border-radius: var(--radius-pill); background: var(--color-accent-2-600); transition: width 300ms cubic-bezier(.2,.8,.2,1); }
 @media (prefers-reduced-motion: reduce) { .progress-bar-fill { transition: none; } }

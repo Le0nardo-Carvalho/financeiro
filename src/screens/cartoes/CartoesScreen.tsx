@@ -39,7 +39,7 @@ export function CartoesScreen() {
 
       {ativos.length === 0 && arquivados.length === 0 ? (
         <EmptyState
-          icon={<CreditCard size={30} strokeWidth={2.75} color="#8c491a" />}
+          icon={<CreditCard size={30} strokeWidth={2.75} color="var(--color-accent-600)" />}
           title="Sem cartão cadastrado"
           description="Gastos no crédito ficam desabilitados até existir um cartão com ciclo definido."
           action={<Button variant="primary" onClick={() => navigate(rotas.novoCartao)}>Cadastrar cartão</Button>}

@@ -1,11 +1,122 @@
+/* Fatura — tela 1e (celular), 2b (computador) e folha 1f. */
 .fatura-tela { display: flex; flex-direction: column; gap: 16px; max-width: 640px; }
-.fatura-resumo-card {
-  background: var(--color-accent-800); color: var(--color-bg); border-radius: var(--radius-card);
-  padding: 20px 22px; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+
+.fatura-cabecalho { display: flex; align-items: center; gap: 12px; }
+.fatura-titulo { flex: 1; font-family: var(--font-heading); font-size: 22px; }
+
+.cartao-visual {
+  position: relative; height: 196px; flex: none; overflow: hidden;
+  border-radius: var(--radius-lg); background: var(--color-card-fill); color: var(--color-card-text);
+  padding: 20px 22px; display: flex; flex-direction: column; justify-content: space-between;
 }
-.fatura-resumo-valor { font-family: var(--font-heading); font-size: 34px; line-height: 1.1; }
-.fatura-item-linha { display: flex; align-items: center; gap: 10px; font-size: 13px; padding: 9px 4px; border-bottom: 1px solid var(--color-divider); flex-wrap: wrap; }
+.cartao-visual > * { position: relative; }
+.cartao-visual .cartao-visual-bolha-1, .cartao-visual .cartao-visual-bolha-2 { position: absolute; border-radius: 50%; }
+.cartao-visual-bolha-1 { right: -60px; top: -70px; width: 220px; height: 220px; background: var(--color-card-blob-1); }
+.cartao-visual-bolha-2 { right: 50px; bottom: -96px; width: 160px; height: 160px; background: var(--color-card-blob-2); }
+.cartao-visual-topo { display: flex; justify-content: space-between; align-items: baseline; }
+.cartao-visual-nome { font-family: var(--font-heading); font-size: 24px; color: var(--color-text); }
+.cartao-visual-tipo { font-size: 12px; font-weight: 600; }
+.cartao-visual-chip { width: 42px; height: 31px; border-radius: 9px; background: var(--color-card-chip); }
+.cartao-visual-ciclo { display: block; font-size: 13px; font-weight: 600; }
+.cartao-visual-nota { display: block; font-size: 10.5px; margin-top: 2px; }
+
+.fatura-total { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+.fatura-total-rotulo { display: block; font-size: 12.5px; color: var(--color-neutral-600); }
+.fatura-total-valor { display: block; font-size: 44px; line-height: 1.1; }
+.fatura-total .selo { margin-bottom: 8px; }
+
+.fatura-bloco { background: var(--color-surface); border-radius: var(--radius-card); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+.fatura-bloco-cabecalho { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.fatura-bloco-titulo { font-family: var(--font-heading); font-size: 16px; }
+
+.linha-tempo { display: flex; flex-direction: column; }
+.linha-tempo-item { display: flex; gap: 13px; }
+.linha-tempo-marca { display: flex; flex-direction: column; align-items: center; flex: none; }
+.linha-tempo-ponto { width: 12px; height: 12px; border-radius: 50%; margin-top: 4px; flex: none; }
+.linha-tempo-traco { width: 2px; flex: 1; background: var(--color-neutral-200); margin: 4px 0; }
+.linha-tempo-corpo { flex: 1; padding-bottom: 14px; display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; min-width: 0; }
+.linha-tempo-corpo > span:first-child { flex: 1; min-width: 0; }
+.linha-tempo-titulo { display: block; font-size: 13.5px; font-weight: 600; }
+.linha-tempo-data { display: block; font-size: 11.5px; color: var(--color-neutral-600); }
+.linha-tempo-valor { font-size: 14.5px; }
+.linha-tempo-corpo .btn-icon { width: 36px; height: 36px; min-height: 36px; margin-top: -6px; }
+.linha-tempo-fim { display: flex; gap: 13px; align-items: center; }
+.linha-tempo-check { width: 18px; height: 18px; border-radius: 50%; background: var(--color-accent-2-600); color: var(--color-bg); display: grid; place-items: center; margin-left: -3px; flex: none; }
+.linha-tempo-aberto { width: 18px; height: 18px; border-radius: 50%; border: 2px dashed var(--color-accent-600); margin-left: -3px; flex: none; }
+.linha-tempo-fim-texto { flex: 1; display: flex; justify-content: space-between; gap: 8px; font-size: 13.5px; font-weight: 700; color: var(--color-accent-700); }
+.linha-tempo-fim-quitada .linha-tempo-fim-texto { color: var(--color-accent-2-700); }
+
+.fatura-comp-topo { display: flex; justify-content: space-between; font-size: 12px; color: var(--color-neutral-600); margin-bottom: 8px; }
+.fatura-barra { display: flex; gap: 4px; height: 10px; }
+.fatura-barra span { border-radius: 99px; min-width: 0; }
+.fatura-comp-legenda { display: flex; justify-content: space-between; gap: 8px; margin-top: 9px; font-size: 12.5px; color: var(--color-neutral-700); flex-wrap: wrap; }
+.fatura-comp-legenda strong { color: var(--color-text); }
+
+.fatura-compras { display: flex; flex-direction: column; }
+.fatura-compra {
+  display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 9px 0; width: 100%; text-align: left;
+  border: none; border-bottom: 1px solid var(--color-divider); background: transparent; color: inherit; cursor: pointer; flex-wrap: wrap;
+}
+.fatura-compra:last-child { border-bottom: none; }
+.fatura-compra-cabecalho { cursor: default; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-neutral-600); padding: 0 0 7px; }
+.fatura-compra-desc { flex: 1; min-width: 140px; }
+.fatura-compra-desc .text-muted { font-size: 11.5px; }
+.fatura-compra-cat { width: 130px; display: flex; align-items: center; gap: 7px; }
+.fatura-compra-parcela { width: 96px; font-size: 12px; }
+.fatura-compra-valor { width: 92px; text-align: right; }
+
+.fatura-proxima { display: flex; align-items: center; gap: 10px; font-size: 13px; padding-bottom: 10px; border-bottom: 1px solid var(--color-divider); }
+.fatura-proxima:last-child { padding-bottom: 0; border-bottom: none; }
+.fatura-proxima-meta { display: block; font-size: 11px; color: var(--color-neutral-600); }
+.fatura-proxima-meta-formacao { color: var(--color-accent-700); }
+.fatura-proxima-valor { font-size: 16px; }
+
 .fatura-paga-anterior {
   background: var(--color-accent-2-100); color: var(--color-accent-2-800); border-radius: var(--radius-card);
   padding: 16px 18px; display: flex; flex-direction: column; gap: 6px;
 }
+
+/* — computador (2b) — */
+.fatura-pc { max-width: none; }
+.fatura-pc-cabecalho { display: flex; align-items: center; gap: 14px; }
+.fatura-pc-titulo { font-family: var(--font-heading); font-size: 28px; margin-right: auto; }
+.fatura-pc-grade { display: grid; grid-template-columns: 1.6fr 1fr; gap: 16px; align-items: start; }
+.fatura-pc-coluna { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.fatura-pc-total {
+  background: var(--color-accent-800); color: var(--color-bg); border-radius: 30px; padding: 20px 24px;
+  display: flex; align-items: center; gap: 28px;
+}
+.fatura-pc-total-valor { display: block; font-size: 42px; line-height: 1.1; }
+.fatura-pc-total-comp { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.fatura-pc-total-comp .fatura-barra { height: 8px; gap: 6px; }
+.fatura-pc-total-legenda { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; opacity: 0.9; flex-wrap: wrap; }
+.fatura-pc-total .selo-aberta { background: color-mix(in srgb, var(--color-bg) 22%, transparent); color: var(--color-bg); }
+.fatura-pc .fatura-bloco { border-radius: 30px; padding: 20px 22px; }
+.fatura-pc .fatura-bloco-titulo { font-size: 19px; }
+.fatura-pc-cartao { display: flex; align-items: center; gap: 10px; font-size: 13.5px; }
+.fatura-pc-cartao .cartao-cor { width: 20px; height: 14px; border-radius: 4px; flex: none; }
+
+/* — folha Registrar pagamento (1f) — */
+.pag-resumo { background: var(--color-surface); border-radius: 24px; padding: 13px 16px; display: flex; flex-direction: column; gap: 9px; }
+.pag-resumo-topo { display: flex; justify-content: space-between; font-size: 12px; gap: 8px; }
+.pag-resumo-falta { color: var(--color-accent-800); }
+.pag-resumo-valor { font-size: 15px; }
+.pag-resumo-trilho { height: 8px; border-radius: 99px; background: var(--color-accent-200); overflow: hidden; }
+.pag-resumo-preenchido { height: 100%; border-radius: 99px; background: var(--color-accent-2-600); transition: width 300ms cubic-bezier(.2,.8,.2,1); }
+.pag-resumo-linha { display: flex; align-items: center; gap: 9px; font-size: 12px; padding-top: 2px; }
+.pag-rotulo-linha { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+.pag-rotulo { display: block; font-size: 12px; color: var(--color-neutral-700); margin-bottom: 6px; }
+.pag-rotulo-linha .pag-rotulo { margin-bottom: 0; }
+.pag-restante { font-size: 11.5px; padding: 6px 12px; border-radius: var(--radius-pill); background: var(--color-accent-2-200); color: var(--color-accent-2-800); border: none; cursor: pointer; }
+.pag-valor {
+  background: var(--color-surface); border-radius: var(--radius-pill); padding: 4px 18px;
+  display: flex; align-items: baseline; gap: 6px; border: 1px solid var(--color-accent);
+}
+.pag-valor-moeda { font-size: 14px; color: var(--color-neutral-700); }
+.pag-valor-input { flex: 1; min-width: 0; border: none; background: transparent; font-size: 26px; padding: 4px 0; color: var(--color-text); }
+.pag-valor-input:focus-visible { outline: none; }
+.pag-valor:focus-within { box-shadow: 0 0 0 2px var(--color-accent-300); }
+.pag-excedente { display: block; margin-top: 6px; font-size: 11.5px; color: var(--color-accent-700); }
+.pag-dupla { display: grid; grid-template-columns: 1.3fr 1fr; gap: 9px; }
+.pag-dupla .input { min-height: 42px; font-size: 13.5px; }
+@media (prefers-reduced-motion: reduce) { .pag-resumo-preenchido { transition: none; } }

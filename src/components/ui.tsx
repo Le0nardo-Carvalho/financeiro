@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom'
 
 // ---------------------------------------------------------------- Button ---
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'icon'
+  variant?: 'primary' | 'secondary' | 'ghost' | 'icon' | 'contorno' | 'perigo'
   block?: boolean
 }
 export function Button({ variant = 'secondary', block, className = '', ...props }: ButtonProps) {
@@ -84,12 +84,17 @@ function useEscapeToClose(onClose: () => void) {
   }, [onClose])
 }
 
-export function BottomSheet({ title, onClose, children, avisoAlcance }: { title: string; onClose: () => void; children: ReactNode; avisoAlcance?: ReactNode }) {
+export function BottomSheet({ title, subtitle, onClose, children, avisoAlcance }: {
+  title: string; subtitle?: ReactNode; onClose: () => void; children: ReactNode; avisoAlcance?: ReactNode
+}) {
   useEscapeToClose(onClose)
   return createPortal(
     <div className="sheet-backdrop" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <div className="sheet" role="dialog" aria-modal="true" aria-label={title}>
-        <span className="sheet-title">{title}</span>
+        <div>
+          <span className="sheet-title">{title}</span>
+          {subtitle && <span className="sheet-subtitulo">{subtitle}</span>}
+        </div>
         {avisoAlcance && <div className="sheet-aviso">{avisoAlcance}</div>}
         {children}
       </div>

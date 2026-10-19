@@ -9,3 +9,5 @@
   width: 38px; height: 38px; border-radius: 50%; border: none; cursor: pointer;
   display: grid; place-items: center;
 }
+.categoria-meta { display: block; font-size: 11.5px; font-weight: 400; color: var(--color-neutral-600); }
+.categoria-valor { font-size: 14.5px; flex: none; }

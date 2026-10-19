@@ -1,6 +1,6 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import {
-  CreditCard, Home, Receipt, Settings2, ShoppingCart, Tag, Target,
+  CreditCard, Home, Plus, Receipt, Settings2, ShoppingCart, Tag, Target,
 } from 'lucide-react'
 import { rotas } from '../router/rotas'
 import { OfflineBanner } from '../components/OfflineBanner'
@@ -8,11 +8,14 @@ import './AppLayout.css'
 
 const ICON_PROPS = { size: 21, strokeWidth: 2.75 }
 
-const NAV_MOBILE = [
+// Celular: Início · Gastos · [+] · Mercado · Ajustes (07, "Navegação").
+// Categorias abre pelo "Ver todas" do Início e pelo item Categorias em Ajustes.
+const NAV_MOBILE_ESQUERDA = [
   { to: rotas.dashboard, label: 'Início', icon: <Home {...ICON_PROPS} />, end: true },
   { to: rotas.lancamentos, label: 'Gastos', icon: <Receipt {...ICON_PROPS} /> },
+]
+const NAV_MOBILE_DIREITA = [
   { to: rotas.mercado, label: 'Mercado', icon: <ShoppingCart {...ICON_PROPS} /> },
-  { to: rotas.categorias, label: 'Categorias', icon: <Tag {...ICON_PROPS} /> },
   { to: rotas.ajustes, label: 'Ajustes', icon: <Settings2 {...ICON_PROPS} /> },
 ]
 
@@ -26,7 +29,31 @@ const NAV_DESKTOP = [
   { to: rotas.ajustes, label: 'Ajustes', icon: <Settings2 size={18} strokeWidth={2.75} /> },
 ]
 
+// Telas de primeiro nível mostram a barra; telas de detalhe (fatura, lista,
+// novo gasto, objetivo…) têm o próprio "voltar" e escondem a barra, como na
+// prancheta.
+const ROTAS_COM_BARRA: string[] = [
+  rotas.dashboard, rotas.lancamentos, rotas.categorias, rotas.mercado, rotas.ajustes, rotas.objetivos, rotas.cartoes,
+]
+
+function ItemBarra({ to, label, icon, end }: { to: string; label: string; icon: React.ReactNode; end?: boolean }) {
+  return (
+    <NavLink
+      to={to}
+      end={end}
+      className={({ isActive }) => `app-bottom-nav-item ${isActive ? 'app-bottom-nav-item-ativo' : ''}`}
+    >
+      {icon}
+      <span>{label}</span>
+    </NavLink>
+  )
+}
+
 export function AppLayout() {
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+  const comBarra = ROTAS_COM_BARRA.includes(pathname.replace(/\/$/, '') || '/')
+
   return (
     <div className="app-shell">
       <aside className="app-sidebar">
@@ -53,24 +80,25 @@ export function AppLayout() {
         </div>
       </aside>
 
-      <div className="app-main">
+      <div className={`app-main ${comBarra ? '' : 'app-main-sem-barra'}`}>
         <OfflineBanner />
         <main className="app-content">
           <Outlet />
         </main>
-        <nav className="app-bottom-nav" aria-label="Navegação principal">
-          {NAV_MOBILE.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.end}
-              className={({ isActive }) => `app-bottom-nav-item ${isActive ? 'app-bottom-nav-item-ativo' : ''}`}
+        {comBarra && (
+          <nav className="app-bottom-nav" aria-label="Navegação principal">
+            {NAV_MOBILE_ESQUERDA.map((item) => <ItemBarra key={item.to} {...item} />)}
+            <button
+              type="button"
+              className="app-bottom-nav-mais"
+              onClick={() => navigate(rotas.novoLancamento)}
+              aria-label="Novo gasto"
             >
-              {item.icon}
-              <span>{item.label}</span>
-            </NavLink>
-          ))}
-        </nav>
+              <Plus size={24} strokeWidth={3} />
+            </button>
+            {NAV_MOBILE_DIREITA.map((item) => <ItemBarra key={item.to} {...item} />)}
+          </nav>
+        )}
       </div>
     </div>
   )

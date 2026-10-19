@@ -4,7 +4,7 @@ import { useCategorias } from '../../lib/queries/categorias'
 import { useCartoes } from '../../lib/queries/cartoes'
 import { useFinalizarListaMercado } from '../../lib/queries/mercado'
 import { formatCentavos } from '../../lib/money'
-import { hojeISO, type ISODate } from '../../lib/calc/datas'
+import { formatMesExtenso, hojeISO, type ISODate } from '../../lib/calc/datas'
 import { mensagemDeErro } from '../../lib/queries/shared'
 import type { FormaPagamento } from '../../types/database'
 import { Button, BottomSheet, Field, Input, Seg } from '../../components/ui'
@@ -13,11 +13,12 @@ interface FinalizarCompraSheetProps {
   listaId: string
   totalConfirmadoCentavos: number
   quantidadeConfirmados: number
+  quantidadeNaoConfirmados?: number
   onClose: () => void
   onFinalizado: (compraId: string) => void
 }
 
-export function FinalizarCompraSheet({ listaId, totalConfirmadoCentavos, quantidadeConfirmados, onClose, onFinalizado }: FinalizarCompraSheetProps) {
+export function FinalizarCompraSheet({ listaId, totalConfirmadoCentavos, quantidadeConfirmados, quantidadeNaoConfirmados = 0, onClose, onFinalizado }: FinalizarCompraSheetProps) {
   const perfilQuery = usePerfil()
   const categoriasQuery = useCategorias()
   const cartoesQuery = useCartoes()
@@ -69,10 +70,14 @@ export function FinalizarCompraSheet({ listaId, totalConfirmadoCentavos, quantid
   }
 
   return (
-    <BottomSheet title="Finalizar compra" onClose={onClose}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-        <span className="text-muted">{quantidadeConfirmados} item(ns) confirmados</span>
-        <span style={{ fontFamily: 'var(--font-heading)', fontSize: 30 }}>{formatCentavos(totalConfirmadoCentavos)}</span>
+    <BottomSheet
+      title="Finalizar compra"
+      subtitle={`${quantidadeConfirmados} ${quantidadeConfirmados === 1 ? 'item confirmado' : 'itens confirmados'}${estabelecimento.trim() ? ` · ${estabelecimento.trim()}` : ''}`}
+      onClose={onClose}
+    >
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+        <span className="text-muted" style={{ fontSize: 12 }}>Total da compra</span>
+        <span className="valor-destaque" style={{ fontSize: 34 }}>{formatCentavos(totalConfirmadoCentavos)}</span>
       </div>
 
       <Field label="Data"><Input type="date" value={data} onChange={(e) => setData(e.target.value)} /></Field>
@@ -112,12 +117,19 @@ export function FinalizarCompraSheet({ listaId, totalConfirmadoCentavos, quantid
         </>
       )}
 
+      <div className="sheet-aviso">
+        <span>
+          Isto cria <strong>um único gasto</strong> de {formatCentavos(totalConfirmadoCentavos)}{forma === 'credito' ? ', contado nos meses das faturas do cartão' : ` em ${formatMesExtenso(data)}`}.
+          {quantidadeNaoConfirmados > 0 && ` Os ${quantidadeNaoConfirmados} itens não confirmados ficam guardados como não comprados.`}
+        </span>
+      </div>
+
       {erro && <div className="novo-gasto-erro" role="alert">{erro}</div>}
 
-      <div className="sheet-actions">
-        <Button onClick={onClose}>Cancelar</Button>
+      <div className="sheet-actions-lado">
+        <Button variant="contorno" onClick={onClose}>Voltar</Button>
         <Button variant="primary" onClick={aoConfirmar} disabled={finalizar.isPending}>
-          {finalizar.isPending ? 'Finalizando…' : 'Confirmar'}
+          {finalizar.isPending ? 'Salvando…' : 'Confirmar e gerar gasto'}
         </Button>
       </div>
     </BottomSheet>

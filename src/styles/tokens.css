@@ -1,46 +1,57 @@
-/* Tokens transpostos de design_handoff_financas/design/_ds/organic-.../styles.css
-   (README.md, "Tokens de design"). Valores finais — não inventar novos. */
-@import url('https://fonts.googleapis.com/css2?family=Caprasimo:wght@400&family=Figtree:wght@400;600;700&display=swap');
+/* Minhas finanças — identidade visual 2 (berinjela, coral, lilás).
+   Substitui src/styles/tokens.css. Mesmos nomes de variáveis da versão anterior.
+   Rampas invertidas para fundo escuro: passo 100 = tom mais escuro, 900 = mais claro.
+   Assim "preenchimento 100–300 + texto 700–900" continua correto em todos os componentes. */
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Figtree:wght@400;600;700&display=swap');
 
 :root {
-  --color-bg: #f5ead8;
-  --color-surface: #ebddc5;
-  --color-text: #201e1d;
-  --color-accent: #c67139;
-  --color-accent-2: #7a8a5e;
-  --color-divider: color-mix(in srgb, #201e1d 16%, transparent);
+  color-scheme: dark;
 
-  --color-neutral-100: #f9f4ed;
-  --color-neutral-200: #eee7db;
-  --color-neutral-300: #dcd3c4;
-  --color-neutral-400: #c0b6a5;
-  --color-neutral-500: #a19786;
-  --color-neutral-600: #82796a;
-  --color-neutral-700: #645c50;
-  --color-neutral-800: #474238;
-  --color-neutral-900: #2e2b25;
+  --color-bg: #171019;
+  --color-surface: #261c28;
+  --color-text: #f5eef4;
+  --color-accent: #f2734f;      /* ação e gasto */
+  --color-accent-2: #8a76e0;    /* positivo: pago, menor que o mês anterior, objetivo */
+  --color-divider: rgba(245, 238, 244, 0.1);
 
-  --color-accent-100: #fff2eb;
-  --color-accent-200: #ffe1d0;
-  --color-accent-300: #ffc6a5;
-  --color-accent-400: #f6a06b;
-  --color-accent-500: #d67f48;
-  --color-accent-600: #b2622d;
-  --color-accent-700: #8c491a;
-  --color-accent-800: #643312;
-  --color-accent-900: #402310;
+  --color-neutral-100: #2f2331;
+  --color-neutral-200: #3a2d3b;
+  --color-neutral-300: #45374a;
+  --color-neutral-400: #554755;
+  --color-neutral-500: #776675;
+  --color-neutral-600: #9a8898;
+  --color-neutral-700: #c3b3c1;
+  --color-neutral-800: #e5d9e3;
+  --color-neutral-900: #f5eef4;
 
-  --color-accent-2-100: #f0fae1;
-  --color-accent-2-200: #e1eecc;
-  --color-accent-2-300: #ccdbb2;
-  --color-accent-2-400: #aebf92;
-  --color-accent-2-500: #8fa073;
-  --color-accent-2-600: #728157;
-  --color-accent-2-700: #56633f;
-  --color-accent-2-800: #3d472b;
-  --color-accent-2-900: #272e1b;
+  --color-accent-100: #33202a;
+  --color-accent-200: #45262c;
+  --color-accent-300: #5c2e2c;
+  --color-accent-400: #cf593a;
+  --color-accent-500: #f2734f;
+  --color-accent-600: #ff9273;
+  --color-accent-700: #ffb59c;
+  --color-accent-800: #ffd7c9;
+  --color-accent-900: #ffeee8;
 
-  --font-heading: 'Caprasimo', system-ui, sans-serif;
+  --color-accent-2-100: #241f3a;
+  --color-accent-2-200: #2f2850;
+  --color-accent-2-300: #3d3172;
+  --color-accent-2-400: #6f5cc0;
+  --color-accent-2-500: #8a76e0;
+  --color-accent-2-600: #a594f5;
+  --color-accent-2-700: #c2b5ff;
+  --color-accent-2-800: #ddd5ff;
+  --color-accent-2-900: #f0ecff;
+
+  /* Cartão de fatura (tela 1e) */
+  --color-card-fill: #55459a;
+  --color-card-blob-1: #6f5cc0;
+  --color-card-blob-2: #3d3172;
+  --color-card-chip: #c2b5ff;
+  --color-card-text: #f0ecff;
+
+  --font-heading: 'Newsreader', Georgia, serif;
   --font-heading-weight: 400;
   --font-body: 'Figtree', system-ui, sans-serif;
 
@@ -53,32 +64,40 @@
 
   --radius-sm: 8px;
   --radius-md: 16px;
+  --radius-icon: 14px;
   --radius-lg: 28px;
   --radius-card: 26px;
+  --radius-nav: 30px;
   --radius-sheet-top: 34px;
   --radius-frame: 40px;
   --radius-pill: 999px;
 
-  --shadow-sm: 0 1px 2px color-mix(in srgb, #2e2b25 14%, transparent);
-  --shadow-md: 0 3px 10px color-mix(in srgb, #2e2b25 16%, transparent);
-  --shadow-lg: 0 12px 32px color-mix(in srgb, #2e2b25 22%, transparent);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 14px 36px rgba(0, 0, 0, 0.55);
+  --scrim: rgba(8, 4, 10, 0.62);
 
-  /* Cores de categoria usadas nos protótipos, para as sugestões iniciais. */
-  --cat-mercado: #d67f48;
-  --cat-alimentacao: #8fa073;
-  --cat-transporte: #8c491a;
-  --cat-moradia: #a19786;
-  --cat-lazer: #ffc6a5;
-  --cat-saude: #dcd3c4;
-  --cat-educacao: #aebf92;
+  /* Cores das categorias sugeridas */
+  --cat-mercado: #f2734f;
+  --cat-alimentacao: #a594f5;
+  --cat-transporte: #ffb59c;
+  --cat-moradia: #9a8898;
+  --cat-saude: #6f5cc0;
+  --cat-educacao: #c2b5ff;
+  --cat-lazer: #e58fb3;
+  --cat-assinaturas: #8a76e0;
+  --cat-presentes: #ff9273;
+  --cat-agata: #ffd7c9;
+  --cat-encargos: #cf593a;
+  --cat-outros: #c3b3c1;
 }
 
-/* Paleta de seis cores oferecida ao criar/editar categoria (tela 1e). */
+/* Paleta oferecida ao criar/editar categoria (tela 1k). */
 :root {
-  --paleta-categoria: #8fa073, #d67f48, #8c491a, #ffc6a5, #a19786, #56633f;
+  --paleta-categoria: #a594f5, #f2734f, #ffb59c, #e58fb3, #9a8898, #c2b5ff;
 }
 
-* ,*::before, *::after { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: border-box; }
 
 html, body, #root { height: 100%; }
 
@@ -89,21 +108,31 @@ body {
   font-family: var(--font-body);
   font-size: 15px;
   line-height: 1.55;
+  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
   font-weight: var(--font-heading-weight);
-  line-height: 1.12;
-  letter-spacing: -0.015em;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
   margin: 0;
 }
 
+/* Valores monetários: até 20px em Figtree 700; acima disso, Newsreader. */
+.valor { font-family: var(--font-body); font-weight: 700; font-variant-numeric: tabular-nums; }
+.valor-destaque { font-family: var(--font-heading); font-weight: 400; line-height: 1.05; }
+
+a { color: var(--color-accent-600); }
+a:hover { color: var(--color-accent-700); }
+
 button, input, select, textarea { font: inherit; color: inherit; }
 
+::selection { background: var(--color-accent-300); color: var(--color-text); }
+
 :focus { outline: none; }
-:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--color-accent-600); outline-offset: 2px; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

@@ -47,7 +47,7 @@ export function CategoriaDetalheScreen() {
   return (
     <div className="cat-detalhe-tela">
       <div className="novo-gasto-header">
-        <button type="button" className="btn btn-icon" onClick={() => navigate(-1)} aria-label="Voltar">
+        <button type="button" className="btn-voltar" onClick={() => navigate(-1)} aria-label="Voltar">
           <ArrowLeft size={18} strokeWidth={2.75} />
         </button>
         <span className="lanc-item-cor" style={{ background: categoria.cor, width: 14, height: 14 }} />
@@ -72,7 +72,7 @@ export function CategoriaDetalheScreen() {
             {evolucao.map(([m, valor]) => (
               <div key={m} className="cat-detalhe-evolucao-linha">
                 <span className="text-muted">{formatMesAno(m)}</span>
-                <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-heading)' }}>{formatCentavos(valor)}</span>
+                <span className="valor" style={{ marginLeft: 'auto' }}>{formatCentavos(valor)}</span>
               </div>
             ))}
           </div>
@@ -86,7 +86,7 @@ export function CategoriaDetalheScreen() {
             <div key={l.id} className="categoria-linha">
               <span>{formatDataCurta(l.compra.data_compra)}</span>
               <span style={{ flex: 1 }}>{l.compra.descricao}</span>
-              <span style={{ fontFamily: 'var(--font-heading)' }}>{formatCentavos(l.valor_centavos)}</span>
+              <span className="valor">{formatCentavos(l.valor_centavos)}</span>
             </div>
           ))}
         </div>
@@ -100,7 +100,7 @@ export function CategoriaDetalheScreen() {
               <div key={l.id} className="categoria-linha" style={{ opacity: 0.75 }}>
                 <span>{formatMesAno(l.mes_competencia)}</span>
                 <span style={{ flex: 1 }}>{l.compra.descricao}</span>
-                <span style={{ fontFamily: 'var(--font-heading)' }}>{formatCentavos(l.valor_centavos)}</span>
+                <span className="valor">{formatCentavos(l.valor_centavos)}</span>
               </div>
             ))}
           </div>

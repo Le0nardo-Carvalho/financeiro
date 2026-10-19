@@ -1,4 +1,4 @@
-// Tipos manuais espelhando supabase/migrations/0001_initial.sql.
+// Tipos manuais espelhando supabase/migrations/0001_initial.sql a 0005_nova_paleta.sql.
 // Dinheiro sempre em centavos (number); datas de calendário como ISODate.
 
 import type { ISODate } from '../lib/calc/datas'
@@ -6,7 +6,10 @@ import type { ISODate } from '../lib/calc/datas'
 export type FormaPagamento = 'pix' | 'debito' | 'credito'
 export type OrigemCompra = 'manual' | 'mercado'
 export type TipoMovimento = 'aporte' | 'retirada'
-export type SituacaoLista = 'aberta' | 'finalizada'
+export type SituacaoLista = 'aberta' | 'finalizada' | 'cancelada'
+export type MotivoCancelamento = 'nao_fui' | 'comprei_em_outro_lugar' | 'desisti' | 'outro'
+export type MeioPagamentoFatura = 'pix' | 'boleto' | 'debito_automatico' | 'transferencia' | 'outro'
+export type SituacaoFatura = 'aberta' | 'parcial' | 'paga'
 
 export interface Perfil {
   id: string
@@ -70,6 +73,7 @@ export interface Compra {
   origem: OrigemCompra
   estabelecimento: string | null
   observacoes: string | null
+  conta_origem: string | null
   versao: number
   criado_em: string
   atualizado_em: string
@@ -118,6 +122,8 @@ export interface ListaMercado {
   situacao: SituacaoLista
   compra_id: string | null
   finalizada_em: string | null
+  cancelada_em: string | null
+  motivo_cancelamento: MotivoCancelamento | null
   versao: number
   criado_em: string
   atualizado_em: string
@@ -136,6 +142,38 @@ export interface ItemLista {
   posicao: number
   criado_em: string
   atualizado_em: string
+}
+
+// Pagamento de fatura: como a dívida do cartão foi quitada. NUNCA entra em
+// soma de gastos — gasto vem só de lancamentos_mensais (0004, CA34).
+export interface PagamentoFatura {
+  id: string
+  owner_id: string
+  fatura_id: string
+  data: ISODate
+  valor_centavos: number
+  meio: MeioPagamentoFatura
+  conta_origem: string | null
+  observacao: string | null
+  criado_em: string
+  atualizado_em: string
+}
+
+// View faturas_resumo: a fatura com total, pago, saldo e situação derivados.
+export interface FaturaResumo extends Fatura {
+  total_centavos: number
+  pago_centavos: number
+  saldo_centavos: number
+  situacao: SituacaoFatura
+}
+
+// View saidas_por_conta: uso exclusivo do quadro "Saiu das contas".
+export interface SaidaPorConta {
+  owner_id: string
+  mes: ISODate
+  conta: string
+  tipo: 'pix' | 'debito' | 'pagamento_fatura'
+  valor_centavos: number
 }
 
 // Formatos dos argumentos das funções RPC do banco (documentação — não
@@ -177,4 +215,19 @@ export interface ArgsCorrigirCompra {
   p_estabelecimento?: string | null
   p_observacoes?: string | null
   p_versao_lida?: number | null
+}
+
+export interface ArgsCancelarLista {
+  p_lista_id: string
+  p_motivo?: MotivoCancelamento | null
+  p_levar_itens?: boolean
+}
+
+export interface ArgsReabrirLista {
+  p_lista_id: string
+}
+
+export interface ArgsDesfazerFinalizacao {
+  p_lista_id: string
+  p_destino?: 'aberta' | 'cancelada'
 }

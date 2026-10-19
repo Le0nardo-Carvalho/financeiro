@@ -1,4 +1,4 @@
-import { formatCentavos } from '../lib/money'
+import { formatValorCurto } from '../lib/rotulos'
 import './DonutChart.css'
 
 export interface SegmentoCategoria {
@@ -43,7 +43,7 @@ export function DonutChart({ segmentos, onSelecionar }: DonutChartProps) {
             <>
               <span className="donut-cor" style={{ background: seg.cor }} aria-hidden />
               <span className="donut-nome">{seg.nome}</span>
-              <span className="donut-valor">{formatCentavos(seg.valorCentavos)}</span>
+              <span className="valor donut-valor">{formatValorCurto(seg.valorCentavos)}</span>
               <span className="donut-pct">{pct}%</span>
             </>
           )
