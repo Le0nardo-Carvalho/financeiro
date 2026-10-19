@@ -6,7 +6,9 @@ import { mensagemDeErro } from '../../lib/queries/shared'
 import { Button, Field, Input } from '../../components/ui'
 import { rotas } from '../../router/rotas'
 
-const PALETA = ['#8fa073', '#d67f48', '#8c491a', '#ffc6a5', '#a19786', '#56633f']
+// Paleta oferecida ao criar/editar (07, tokens.css --paleta-categoria). São
+// valores gravados no banco, por isso ficam como hex.
+const PALETA = ['#a594f5', '#f2734f', '#ffb59c', '#e58fb3', '#9a8898', '#c2b5ff']
 
 export function NovoCartaoScreen() {
   const navigate = useNavigate()
@@ -32,7 +34,7 @@ export function NovoCartaoScreen() {
   return (
     <div className="novo-gasto-tela">
       <div className="novo-gasto-header">
-        <button type="button" className="btn btn-icon" onClick={() => navigate(-1)} aria-label="Voltar">
+        <button type="button" className="btn-voltar" onClick={() => navigate(-1)} aria-label="Voltar">
           <ArrowLeft size={18} strokeWidth={2.75} />
         </button>
         <span className="lanc-titulo">Novo cartão</span>
@@ -50,7 +52,7 @@ export function NovoCartaoScreen() {
           <div className="categoria-paleta">
             {PALETA.map((c) => (
               <button key={c} type="button" className="categoria-swatch" style={{ background: c }} onClick={() => setCor(c)} aria-pressed={cor === c}>
-                {cor === c && <Check size={16} strokeWidth={3} color="#fff" />}
+                {cor === c && <Check size={16} strokeWidth={3} color="var(--color-bg)" />}
               </button>
             ))}
           </div>

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ChevronLeft, ChevronRight, Filter, Plus, Search } from 'lucide-react'
+import { Filter, Plus, Search } from 'lucide-react'
 import { useMesSelecionado } from '../../context/MesSelecionadoContext'
 import { useLancamentosDoMes } from '../../lib/queries/lancamentos'
 import { useCategorias } from '../../lib/queries/categorias'
@@ -10,12 +10,14 @@ import { formatDataCurta, formatMesAno } from '../../lib/calc/datas'
 import type { FormaPagamento } from '../../types/database'
 import { Button, EmptyState, Input } from '../../components/ui'
 import { rotas } from '../../router/rotas'
+import { SeletorMes } from '../../components/SeletorMes'
+import { formatValorCurto } from '../../lib/rotulos'
 import './LancamentosScreen.css'
 
 const ROTULO_PAGAMENTO: Record<FormaPagamento, string> = { pix: 'Pix', debito: 'Débito', credito: 'Crédito' }
 
 export function LancamentosScreen() {
-  const { mes, irParaMesAnterior, irParaProximoMes } = useMesSelecionado()
+  const { mes } = useMesSelecionado()
   const navigate = useNavigate()
   const lancamentosQuery = useLancamentosDoMes(mes)
   const categoriasQuery = useCategorias()
@@ -46,19 +48,12 @@ export function LancamentosScreen() {
     <div className="lanc-tela">
       <div className="lanc-header">
         <span className="lanc-titulo">Lançamentos</span>
-        <Button variant="primary" onClick={() => navigate(rotas.novoLancamento)}>
-          <Plus size={16} strokeWidth={3} /> Novo
-        </Button>
-      </div>
-
-      <div className="lanc-mes-seletor">
-        <button type="button" onClick={irParaMesAnterior} aria-label="Mês anterior" className="dash-mes-seletor">
-          <ChevronLeft size={16} strokeWidth={2.75} />
-        </button>
-        <span className="dash-mes-label">{formatMesAno(mes)}</span>
-        <button type="button" onClick={irParaProximoMes} aria-label="Próximo mês" className="dash-mes-seletor">
-          <ChevronRight size={16} strokeWidth={2.75} />
-        </button>
+        <span className="lanc-header-fim">
+          <SeletorMes />
+          <Button variant="primary" className="lanc-novo" onClick={() => navigate(rotas.novoLancamento)}>
+            <Plus size={16} strokeWidth={3} /> Novo gasto
+          </Button>
+        </span>
       </div>
 
       <div className="lanc-busca-linha">
@@ -94,9 +89,16 @@ export function LancamentosScreen() {
         </div>
       )}
 
+      {filtrados.length > 0 && (
+        <div className="lanc-resumo">
+          <span>{filtrados.length} {filtrados.length === 1 ? 'lançamento' : 'lançamentos'}</span>
+          <span className="valor">{formatCentavos(filtrados.reduce((s, l) => s + l.valor_centavos, 0))}</span>
+        </div>
+      )}
+
       {filtrados.length === 0 ? (
         <EmptyState
-          icon={<Search size={30} strokeWidth={2.75} color="#645c50" />}
+          icon={<Search size={30} strokeWidth={2.75} color="var(--color-neutral-600)" />}
           title="Nada encontrado"
           description={busca ? `Nenhum gasto com "${busca}" em ${formatMesAno(mes)}.` : `Nenhum lançamento em ${formatMesAno(mes)} com esses filtros.`}
         />
@@ -106,17 +108,23 @@ export function LancamentosScreen() {
             const cat = categorias.find((c) => c.id === l.categoria_id)
             return (
               <Link key={l.id} to={rotas.lancamento(l.compra_id)} className="lanc-item">
-                <span className="lanc-item-cor" style={{ background: cat?.cor ?? '#a19786' }} />
+                <span className="lanc-item-cor" style={{ background: cat?.cor ?? 'var(--cat-outros)' }} />
                 <span className="lanc-item-corpo">
                   <span className="lanc-item-desc">{l.compra.descricao}</span>
                   <span className="lanc-item-meta">
                     {formatDataCurta(l.compra.data_compra)} · {cat?.nome ?? '—'} ·{' '}
                     {l.compra.forma_pagamento === 'credito'
-                      ? l.total_parcelas > 1 ? `Crédito ${l.numero_parcela}/${l.total_parcelas}` : 'Crédito à vista'
+                      ? 'Crédito'
                       : ROTULO_PAGAMENTO[l.compra.forma_pagamento]}
                   </span>
                 </span>
-                <span className="lanc-item-valor">{formatCentavos(l.valor_centavos)}</span>
+                <span className="lanc-item-fim">
+                  <span className="lanc-item-valor">{formatValorCurto(l.valor_centavos)}</span>
+                  {l.compra.forma_pagamento === 'credito' && (
+                    <span className="tag tag-accent">{l.total_parcelas > 1 ? `${l.numero_parcela} de ${l.total_parcelas}` : 'à vista'}</span>
+                  )}
+                  {l.compra.origem === 'mercado' && <span className="tag tag-accent-2">Da lista de mercado</span>}
+                </span>
               </Link>
             )
           })}

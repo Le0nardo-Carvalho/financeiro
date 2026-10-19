@@ -52,7 +52,7 @@ export function ObjetivosScreen() {
 
       {objetivos.length === 0 ? (
         <EmptyState
-          icon={<Target size={30} strokeWidth={2.75} color="#56633f" />}
+          icon={<Target size={30} strokeWidth={2.75} color="var(--color-accent-2-600)" />}
           title="Nenhum objetivo ainda"
           description='Crie uma meta como "Viagem" e registre quanto já guardou.'
           action={<Button variant="primary" onClick={() => setCriando(true)}>Criar objetivo</Button>}
@@ -62,7 +62,7 @@ export function ObjetivosScreen() {
           {objetivos.map((o) => (
             <button key={o.id} type="button" className="atalho-card" onClick={() => navigate(rotas.objetivo(o.id))}>
               <span className="atalho-icone" style={{ background: 'var(--color-accent-2-200)' }}>
-                <Target size={18} strokeWidth={2.75} color="#56633f" />
+                <Target size={18} strokeWidth={2.75} color="var(--color-accent-2-600)" />
               </span>
               <span>
                 <span className="atalho-titulo">{o.nome}</span>

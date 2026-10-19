@@ -75,3 +75,25 @@ export function hojeISO(): ISODate {
   const agora = new Date()
   return toISO({ ano: agora.getFullYear(), mes: agora.getMonth() + 1, dia: agora.getDate() })
 }
+
+// Os `quantidade` meses terminando em `mes` (inclusive), do mais antigo ao
+// mais recente, sempre como primeiro dia do mês.
+export function ultimosMeses(mes: ISODate, quantidade: number): ISODate[] {
+  let { ano, mes: m } = parseISO(mes)
+  const meses: ISODate[] = []
+  for (let i = 0; i < quantidade; i++) {
+    meses.unshift(toISO({ ano, mes: m, dia: 1 }))
+    ;({ ano, mes: m } = mesAnterior(ano, m))
+  }
+  return meses
+}
+
+const NOMES_MES_CURTO = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez']
+
+export function formatMesCurto(data: ISODate): string {
+  return NOMES_MES_CURTO[parseISO(data).mes - 1]
+}
+
+export function formatMesExtenso(data: ISODate): string {
+  return NOMES_MES[parseISO(data).mes - 1].toLowerCase()
+}

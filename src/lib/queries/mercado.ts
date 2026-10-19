@@ -1,19 +1,26 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../supabase'
 import { useGravacao } from './shared'
-import type { FormaPagamento, ItemLista, ListaMercado } from '../../types/database'
+import type { FormaPagamento, ItemLista, ListaMercado, MotivoCancelamento } from '../../types/database'
 import type { ISODate } from '../calc/datas'
 
+export interface ListaMercadoResumo extends ListaMercado {
+  itens: Pick<ItemLista, 'quantidade' | 'preco_unitario_centavos' | 'confirmado'>[]
+  compra: { valor_total_centavos: number; forma_pagamento: FormaPagamento; data_compra: ISODate } | null
+}
+
+// Listas com os itens (para "5 itens · 3 confirmados" e o total marcado) e,
+// nas finalizadas, a compra gerada (valor e forma) — tela 1m.
 export function useListasMercado() {
   return useQuery({
     queryKey: ['listas-mercado'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('listas_mercado')
-        .select('*')
+        .select('*, itens:itens_lista(quantidade, preco_unitario_centavos, confirmado), compra:compras(valor_total_centavos, forma_pagamento, data_compra)')
         .order('criado_em', { ascending: false })
       if (error) throw error
-      return data as ListaMercado[]
+      return data as unknown as ListaMercadoResumo[]
     },
   })
 }
@@ -160,6 +167,74 @@ export function useFinalizarListaMercado() {
       queryClient.invalidateQueries({ queryKey: ['lancamentos'] })
       queryClient.invalidateQueries({ queryKey: ['dashboard'] })
       queryClient.invalidateQueries({ queryKey: ['faturas'] })
+    },
+  })
+}
+
+function invalidarMercadoEGastos(queryClient: ReturnType<typeof useQueryClient>, listaId: string) {
+  queryClient.invalidateQueries({ queryKey: ['listas-mercado'] })
+  queryClient.invalidateQueries({ queryKey: ['lista-mercado', listaId] })
+  queryClient.invalidateQueries({ queryKey: ['lancamentos'] })
+  queryClient.invalidateQueries({ queryKey: ['dashboard'] })
+  queryClient.invalidateQueries({ queryKey: ['faturas'] })
+  queryClient.invalidateQueries({ queryKey: ['faturas-resumo'] })
+  queryClient.invalidateQueries({ queryKey: ['fatura'] })
+  queryClient.invalidateQueries({ queryKey: ['saidas-por-conta'] })
+}
+
+// Lista aberta → cancelada (tela 1p). Não cria compra nem lançamento (CA27).
+// Com levarItens, cancelar_lista() cria uma lista aberta nova com os mesmos
+// produtos, sem preço e sem confirmação (CA28) e devolve o id dela.
+export function useCancelarLista() {
+  const queryClient = useQueryClient()
+  const { executar } = useGravacao()
+  return useMutation({
+    mutationFn: (input: { listaId: string; motivo: MotivoCancelamento | null; levarItens: boolean }) =>
+      executar(async () => {
+        const { data, error } = await supabase.rpc('cancelar_lista', {
+          p_lista_id: input.listaId,
+          p_motivo: input.motivo,
+          p_levar_itens: input.levarItens,
+        })
+        if (error) throw error
+        return (data as string | null) ?? null
+      }),
+    onSuccess: (_novaListaId, input) => invalidarMercadoEGastos(queryClient, input.listaId),
+  })
+}
+
+export function useReabrirLista() {
+  const queryClient = useQueryClient()
+  const { executar } = useGravacao()
+  return useMutation({
+    mutationFn: (listaId: string) =>
+      executar(async () => {
+        const { error } = await supabase.rpc('reabrir_lista', { p_lista_id: listaId })
+        if (error) throw error
+      }),
+    onSuccess: (_, listaId) => invalidarMercadoEGastos(queryClient, listaId),
+  })
+}
+
+// Lista finalizada → aberta ou cancelada (tela 1q). desfazer_finalizacao()
+// apaga a compra (parcelas em cascata) e limpa compra_id na mesma transação
+// (CA29, CA30); se a fatura já tinha pagamento, ela fica marcada como
+// corrigida após o pagamento.
+export function useDesfazerFinalizacao() {
+  const queryClient = useQueryClient()
+  const { executar } = useGravacao()
+  return useMutation({
+    mutationFn: (input: { listaId: string; destino: 'aberta' | 'cancelada' }) =>
+      executar(async () => {
+        const { error } = await supabase.rpc('desfazer_finalizacao', {
+          p_lista_id: input.listaId,
+          p_destino: input.destino,
+        })
+        if (error) throw error
+      }),
+    onSuccess: (_, input) => {
+      invalidarMercadoEGastos(queryClient, input.listaId)
+      queryClient.invalidateQueries({ queryKey: ['compra'] })
     },
   })
 }

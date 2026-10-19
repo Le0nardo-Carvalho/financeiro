@@ -29,6 +29,7 @@ export function NovoGastoScreen() {
   const [parcelas, setParcelas] = useState(1)
   const [ajustesFatura, setAjustesFatura] = useState(0)
   const [observacoes, setObservacoes] = useState('')
+  const [contaOrigem, setContaOrigem] = useState('')
   const [erro, setErro] = useState<string | null>(null)
   const [criandoCategoria, setCriandoCategoria] = useState(false)
   const [nomeNovaCategoria, setNomeNovaCategoria] = useState('')
@@ -52,8 +53,9 @@ export function NovoGastoScreen() {
 
   async function resolverPrimeiraFaturaId(): Promise<string | null> {
     if (!cartaoId || ajustesFatura === 0) return null
-    let { data: id, error } = await supabase.rpc('primeira_fatura', { p_cartao: cartaoId, p_data_compra: data })
+    const { data: primeira, error } = await supabase.rpc('primeira_fatura', { p_cartao: cartaoId, p_data_compra: data })
     if (error) throw error
+    let id = primeira
     for (let i = 0; i < ajustesFatura; i++) {
       const resultado = await supabase.rpc('fatura_seguinte', { p_cartao: cartaoId, p_fatura: id as string })
       if (resultado.error) throw resultado.error
@@ -65,7 +67,7 @@ export function NovoGastoScreen() {
   async function aoCriarCategoria() {
     if (!nomeNovaCategoria.trim()) return
     try {
-      const resultado = await criarCategoria.mutateAsync({ nome: nomeNovaCategoria, cor: '#8fa073' })
+      const resultado = await criarCategoria.mutateAsync({ nome: nomeNovaCategoria, cor: '#a594f5' })
       setCategoriaId(resultado.categoria.id)
       setCriandoCategoria(false)
       setNomeNovaCategoria('')
@@ -96,6 +98,7 @@ export function NovoGastoScreen() {
         parcelas: forma === 'credito' ? parcelas : 1,
         primeiraFaturaId,
         observacoes: observacoes.trim() || null,
+        contaOrigem: forma === 'credito' ? null : contaOrigem.trim() || null,
       })
       navigate(`/lancamentos/${compraId}`)
     } catch (e) {
@@ -109,7 +112,7 @@ export function NovoGastoScreen() {
   return (
     <div className="novo-gasto-tela">
       <div className="novo-gasto-header">
-        <button type="button" className="btn btn-icon" onClick={() => navigate(-1)} aria-label="Voltar">
+        <button type="button" className="btn-voltar" onClick={() => navigate(-1)} aria-label="Voltar">
           <ArrowLeft size={18} strokeWidth={2.75} />
         </button>
         <span className="lanc-titulo">Novo gasto</span>
@@ -177,6 +180,12 @@ export function NovoGastoScreen() {
           />
         </Field>
 
+        {forma !== 'credito' && (
+          <Field label="Saiu da conta (opcional)">
+            <Input value={contaOrigem} onChange={(e) => setContaOrigem(e.target.value)} placeholder="Ex.: Banco do Brasil" />
+          </Field>
+        )}
+
         {forma === 'credito' && (
           <>
             <Field label="Cartão">
@@ -210,7 +219,7 @@ export function NovoGastoScreen() {
                   <div key={p.numero} className="novo-gasto-previa-linha">
                     <span>{p.numero} de {p.totalParcelas}</span>
                     <span className="text-muted">vence {formatDataLonga(p.dataVencimento)}</span>
-                    <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-heading)' }}>{formatCentavos(p.valorCentavos)}</span>
+                    <span className="valor" style={{ marginLeft: 'auto' }}>{formatCentavos(p.valorCentavos)}</span>
                   </div>
                 ))}
               </div>

@@ -60,7 +60,7 @@ export function DetalheLancamentoScreen() {
   return (
     <div className="detalhe-lanc-tela">
       <div className="novo-gasto-header">
-        <button type="button" className="btn btn-icon" onClick={() => navigate(-1)} aria-label="Voltar">
+        <button type="button" className="btn-voltar" onClick={() => navigate(-1)} aria-label="Voltar">
           <ArrowLeft size={18} strokeWidth={2.75} />
         </button>
         <span className="lanc-titulo">{compra.descricao}</span>
@@ -96,7 +96,7 @@ export function DetalheLancamentoScreen() {
                 <div key={p.id} className="detalhe-lanc-parcela-linha">
                   <span>{p.numero_parcela} de {p.total_parcelas}</span>
                   <span className="text-muted">{formatMesAno(p.mes_competencia)}</span>
-                  <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-heading)' }}>{formatCentavos(p.valor_centavos)}</span>
+                  <span className="valor" style={{ marginLeft: 'auto' }}>{formatCentavos(p.valor_centavos)}</span>
                 </div>
               ))}
             </div>

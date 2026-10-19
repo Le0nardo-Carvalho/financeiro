@@ -66,7 +66,7 @@ begin
   end if;
 
   -- CA02/CA12 — compra parcelada e reclassificação.
-  compra := criar_compra('Notebook', '2026-09-18', 30000, cat_mercado, 'credito', cartao_nubank, 3);
+  compra := criar_compra('Notebook', '2026-09-18', 30000, cat_mercado, 'credito', cartao_nubank, 3::smallint);
   if (select count(*) from lancamentos_mensais where compra_id = compra) <> 3 then
     raise exception 'CA02 falhou: compra em 3 parcelas não gerou 3 lançamentos';
   end if;
@@ -88,12 +88,11 @@ begin
   end;
 
   -- CA15 — marcar fatura como paga não cria lançamento.
-  declare qtd_antes int; qtd_depois int; fatura_id uuid;
+  declare qtd_antes int; qtd_depois int; fatura_alvo uuid;
   begin
     select count(*) into qtd_antes from lancamentos_mensais where owner_id = auth.uid();
-    select id into fatura_id from lancamentos_mensais where compra_id = compra limit 1;
-    select fatura_id into fatura_id from lancamentos_mensais where compra_id = compra limit 1;
-    update faturas set paga = true, paga_em = current_date where id = fatura_id;
+    select l.fatura_id into fatura_alvo from lancamentos_mensais l where l.compra_id = compra limit 1;
+    update faturas set paga = true, paga_em = current_date where id = fatura_alvo;
     select count(*) into qtd_depois from lancamentos_mensais where owner_id = auth.uid();
     if qtd_antes <> qtd_depois then
       raise exception 'CA15 falhou: marcar fatura como paga criou lançamento(s)';
@@ -155,6 +154,6 @@ end $$;
 
 reset role;
 
-raise notice 'Todos os testes de RLS e idempotência passaram.';
+do $$ begin raise notice 'Todos os testes de RLS e idempotência passaram.'; end $$;
 
 rollback; -- não deixa dado de teste no banco

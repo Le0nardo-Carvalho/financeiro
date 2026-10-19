@@ -46,7 +46,7 @@ export function ObjetivoDetalheScreen() {
   return (
     <div className="objetivo-detalhe-tela">
       <div className="novo-gasto-header">
-        <button type="button" className="btn btn-icon" onClick={() => navigate(-1)} aria-label="Voltar">
+        <button type="button" className="btn-voltar" onClick={() => navigate(-1)} aria-label="Voltar">
           <ArrowLeft size={18} strokeWidth={2.75} />
         </button>
         <span className="lanc-titulo">{objetivo.nome}</span>
@@ -73,7 +73,7 @@ export function ObjetivoDetalheScreen() {
             <div key={m.id} className="categoria-linha">
               <span className="text-muted">{formatDataLonga(m.data)}</span>
               <span style={{ flex: 1 }}>{m.tipo === 'aporte' ? 'Guardado' : 'Retirado'}</span>
-              <span style={{ fontFamily: 'var(--font-heading)', color: m.tipo === 'retirada' ? '#a3341f' : 'inherit' }}>
+              <span className="valor" style={{ color: m.tipo === 'retirada' ? 'var(--color-accent-700)' : 'var(--color-accent-2-700)' }}>
                 {m.tipo === 'retirada' ? '-' : '+'} {formatCentavos(m.valor_centavos)}
               </span>
             </div>

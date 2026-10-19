@@ -1,2 +1,50 @@
-.mercado-tela { display: flex; flex-direction: column; gap: 16px; }
-.mercado-lista-listas { display: flex; flex-direction: column; gap: 9px; margin-top: 6px; }
+/* Listas de mercado — tela 1m; folhas 1p e 1q. */
+.mercado-tela { display: flex; flex-direction: column; gap: 12px; }
+.btn.mercado-nova { min-height: 38px; padding: 9px 15px; font-size: 13px; }
+
+.mercado-andamento {
+  background: var(--color-surface); border: 1px solid var(--color-accent-400); border-radius: var(--radius-card);
+  padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;
+}
+.mercado-andamento-topo { display: flex; align-items: center; gap: 10px; }
+.mercado-andamento-nome { display: block; font-size: 15px; font-weight: 600; }
+.mercado-andamento-meta { display: block; font-size: 11.5px; color: var(--color-neutral-700); }
+.mercado-andamento-valor { font-size: 16px; }
+.mercado-andamento-acoes { display: flex; gap: 7px; }
+.mercado-acao {
+  flex: 1; text-align: center; border-radius: var(--radius-pill); padding: 9px; min-height: 40px;
+  font-size: 12.5px; font-weight: 600; cursor: pointer;
+  border: 1px solid var(--color-divider); background: transparent; color: var(--color-accent-800);
+}
+.mercado-acao-principal { background: var(--color-accent); color: var(--color-bg); border-color: transparent; }
+
+.mercado-historico-titulo { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+.mercado-historico-linha { flex: 1; height: 1px; background: var(--color-divider); }
+.mercado-historico { display: flex; flex-direction: column; gap: 8px; }
+.mercado-item {
+  background: var(--color-surface); border-radius: 24px; padding: 12px 15px; border: 1px solid transparent;
+  display: flex; align-items: center; gap: 11px; width: 100%; text-align: left; color: inherit; cursor: pointer;
+}
+.mercado-item-cancelada { background: transparent; border: 1px dashed var(--color-neutral-400); cursor: default; }
+.mercado-item-abrir { flex: 1; min-width: 0; display: flex; align-items: center; gap: 11px; background: none; border: none; padding: 0; color: inherit; text-align: left; cursor: pointer; }
+.mercado-item-icone {
+  width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; flex: none;
+  background: var(--color-neutral-200); color: var(--color-neutral-700);
+}
+.mercado-item-icone-finalizada { background: var(--color-accent-2-200); color: var(--color-accent-2-700); }
+.mercado-item-corpo { flex: 1; min-width: 0; }
+.mercado-item-nome { display: block; font-size: 14px; font-weight: 600; }
+.mercado-item-cancelada .mercado-item-nome { color: var(--color-neutral-800); }
+.mercado-item-meta { display: block; font-size: 11px; color: var(--color-neutral-600); }
+.mercado-item-valor { font-size: 14px; }
+.mercado-reabrir { background: none; border: none; padding: 8px 4px; font-size: 12px; color: var(--color-accent-700); text-decoration: underline; cursor: pointer; }
+.mercado-nota { font-size: 11.5px; line-height: 1.5; color: var(--color-neutral-700); text-align: center; padding: 0 10px; margin: 4px 0 0; }
+
+.cancelar-motivos { display: flex; flex-direction: column; gap: 7px; }
+.cancelar-levar { display: flex; align-items: center; gap: 12px; background: var(--color-surface); border-radius: 24px; padding: 12px 16px; }
+
+.desfazer-compra { display: flex; align-items: center; gap: 11px; background: var(--color-surface); border-radius: 24px; padding: 13px 16px; }
+.desfazer-compra-valor { font-size: 18px; text-decoration: line-through; color: var(--color-neutral-600); }
+.desfazer-efeitos { display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; }
+.desfazer-efeitos > span { display: flex; gap: 9px; align-items: flex-start; }
+.desfazer-efeitos svg { flex: none; margin-top: 2px; }

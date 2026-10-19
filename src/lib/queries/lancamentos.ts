@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../supabase'
 import { useGravacao, ConflitoVersaoError } from './shared'
 import type { Cartao, Compra, Fatura, FormaPagamento, LancamentoMensal } from '../../types/database'
-import type { ISODate } from '../calc/datas'
+import { ultimosMeses, type ISODate } from '../calc/datas'
 
 export interface LancamentoDetalhado extends LancamentoMensal {
   compra: Compra
@@ -15,6 +15,7 @@ export interface LancamentoDetalhado extends LancamentoMensal {
 export function useLancamentosDoMes(mes: ISODate) {
   return useQuery({
     queryKey: ['lancamentos', mes],
+    enabled: Boolean(mes),
     queryFn: async () => {
       const { data, error } = await supabase
         .from('lancamentos_mensais')
@@ -23,6 +24,28 @@ export function useLancamentosDoMes(mes: ISODate) {
         .order('criado_em', { ascending: false })
       if (error) throw error
       return data as unknown as LancamentoDetalhado[]
+    },
+  })
+}
+
+// Totais dos últimos `quantidade` meses até `mes` (gráfico da tela 1a e
+// comparativo com o mês anterior). Só lancamentos_mensais — gasto nunca
+// vem de pagamento de fatura (CA34).
+export function useTotaisUltimosMeses(mes: ISODate, quantidade = 6) {
+  const meses = ultimosMeses(mes, quantidade)
+  return useQuery({
+    queryKey: ['lancamentos', 'ultimos-meses', mes, quantidade],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('lancamentos_mensais')
+        .select('valor_centavos, mes_competencia')
+        .gte('mes_competencia', meses[0])
+        .lte('mes_competencia', mes)
+      if (error) throw error
+      return (data as { valor_centavos: number; mes_competencia: ISODate }[]).map((l) => ({
+        valorCentavos: l.valor_centavos,
+        mesCompetencia: l.mes_competencia,
+      }))
     },
   })
 }
@@ -74,6 +97,7 @@ export interface DadosCompra {
   primeiraFaturaId?: string | null
   estabelecimento?: string | null
   observacoes?: string | null
+  contaOrigem?: string | null // só Pix/débito: alimenta "Saiu das contas"
 }
 
 function invalidarAgregacoes(queryClient: ReturnType<typeof useQueryClient>) {
@@ -83,6 +107,7 @@ function invalidarAgregacoes(queryClient: ReturnType<typeof useQueryClient>) {
   queryClient.invalidateQueries({ queryKey: ['faturas-resumo'] })
   queryClient.invalidateQueries({ queryKey: ['fatura'] })
   queryClient.invalidateQueries({ queryKey: ['compra'] })
+  queryClient.invalidateQueries({ queryKey: ['saidas-por-conta'] })
 }
 
 export function useCriarCompra() {
@@ -106,7 +131,16 @@ export function useCriarCompra() {
           p_observacoes: input.observacoes ?? null,
         })
         if (error) throw error
-        return data as string
+        const compraId = data as string
+        // criar_compra() não recebe a conta; ela é gravada logo depois. Uma
+        // falha aqui não desfaz o gasto já confirmado (repetir criaria outro):
+        // a compra só aparece como "Conta não informada" em "Saiu das contas".
+        const conta = input.contaOrigem?.trim()
+        if (conta && input.formaPagamento !== 'credito') {
+          const { error: erroConta } = await supabase.from('compras').update({ conta_origem: conta }).eq('id', compraId)
+          if (erroConta) console.warn('Gasto salvo, mas a conta de origem não foi gravada:', erroConta)
+        }
+        return compraId
       }),
     onSuccess: () => invalidarAgregacoes(queryClient),
   })

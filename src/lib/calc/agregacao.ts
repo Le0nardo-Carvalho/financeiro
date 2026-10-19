@@ -82,3 +82,39 @@ export function previsaoFuturaCategoria(
     .filter((l) => l.categoriaId === categoriaId && l.mesCompetencia > mesAtual)
     .reduce((s, l) => s + l.valorCentavos, 0)
 }
+
+// Comparativo com o mês anterior (tela 1a). "menor" = gastou menos, que é o
+// lado positivo (lilás); gastar mais é coral.
+export interface ComparativoMes {
+  diferencaCentavos: number // atual − anterior
+  percentual: number | null // null quando o mês anterior foi zero
+  menor: boolean
+}
+
+export function comparativoComAnterior(atualCentavos: number, anteriorCentavos: number): ComparativoMes {
+  const diferencaCentavos = atualCentavos - anteriorCentavos
+  return {
+    diferencaCentavos,
+    percentual: anteriorCentavos > 0 ? Math.round((Math.abs(diferencaCentavos) / anteriorCentavos) * 100) : null,
+    menor: diferencaCentavos < 0,
+  }
+}
+
+// Total por mes_competencia para uma lista de meses (gráfico "Últimos 6
+// meses"). Meses sem lançamento entram com zero.
+export function totaisPorMes(
+  lancamentos: Pick<LancamentoMensal, 'valorCentavos' | 'mesCompetencia'>[],
+  meses: ISODate[],
+): { mes: ISODate; totalCentavos: number }[] {
+  const totais = new Map<ISODate, number>(meses.map((m) => [m, 0]))
+  for (const l of lancamentos) {
+    if (totais.has(l.mesCompetencia)) totais.set(l.mesCompetencia, (totais.get(l.mesCompetencia) ?? 0) + l.valorCentavos)
+  }
+  return meses.map((mes) => ({ mes, totalCentavos: totais.get(mes) ?? 0 }))
+}
+
+// Média em centavos inteiros (arredondada) dos totais informados.
+export function mediaCentavos(valores: number[]): number {
+  if (valores.length === 0) return 0
+  return Math.round(valores.reduce((s, v) => s + v, 0) / valores.length)
+}

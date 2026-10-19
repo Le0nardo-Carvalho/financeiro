@@ -5,7 +5,9 @@ import { Button, Field, Input, BottomSheet } from '../../components/ui'
 import { mensagemDeErro } from '../../lib/queries/shared'
 
 // Paleta de seis cores da tela 1e (README.md, "Tokens de design").
-const PALETA = ['#8fa073', '#d67f48', '#8c491a', '#ffc6a5', '#a19786', '#56633f']
+// Paleta oferecida ao criar/editar (07, tokens.css --paleta-categoria). São
+// valores gravados no banco, por isso ficam como hex.
+const PALETA = ['#a594f5', '#f2734f', '#ffb59c', '#e58fb3', '#9a8898', '#c2b5ff']
 
 interface CategoriaEditorSheetProps {
   categoriaExistente?: Categoria
@@ -61,7 +63,7 @@ export function CategoriaEditorSheet({ categoriaExistente, qtdLancamentosAfetado
               aria-label={`Cor ${c}`}
               aria-pressed={cor === c}
             >
-              {cor === c && <Check size={16} strokeWidth={3} color="#fff" />}
+              {cor === c && <Check size={16} strokeWidth={3} color="var(--color-bg)" />}
             </button>
           ))}
         </div>

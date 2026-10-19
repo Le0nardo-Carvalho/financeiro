@@ -5,9 +5,11 @@ import { HashRouter } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { SyncStatusProvider } from './context/SyncStatusContext'
 import { MesSelecionadoProvider } from './context/MesSelecionadoContext'
-import App from './App'
+// Estilos base antes de App: o CSS de cada tela (importado pelas telas) vem
+// depois e pode refinar as primitivas sem precisar de seletor mais forte.
 import './styles/tokens.css'
 import './styles/components.css'
+import App from './App'
 
 // Uma consulta por tela, com revalidação ao voltar o foco da janela ou a
 // conexão (README.md, "Busca de dados").
