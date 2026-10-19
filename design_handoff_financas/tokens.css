@@ -1,0 +1,144 @@
+/* Minhas finanças — identidade visual 2 (berinjela, coral, lilás).
+   Substitui src/styles/tokens.css. Mesmos nomes de variáveis da versão anterior.
+   Rampas invertidas para fundo escuro: passo 100 = tom mais escuro, 900 = mais claro.
+   Assim "preenchimento 100–300 + texto 700–900" continua correto em todos os componentes. */
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Figtree:wght@400;600;700&display=swap');
+
+:root {
+  color-scheme: dark;
+
+  --color-bg: #171019;
+  --color-surface: #261c28;
+  --color-text: #f5eef4;
+  --color-accent: #f2734f;      /* ação e gasto */
+  --color-accent-2: #8a76e0;    /* positivo: pago, menor que o mês anterior, objetivo */
+  --color-divider: rgba(245, 238, 244, 0.1);
+
+  --color-neutral-100: #2f2331;
+  --color-neutral-200: #3a2d3b;
+  --color-neutral-300: #45374a;
+  --color-neutral-400: #554755;
+  --color-neutral-500: #776675;
+  --color-neutral-600: #9a8898;
+  --color-neutral-700: #c3b3c1;
+  --color-neutral-800: #e5d9e3;
+  --color-neutral-900: #f5eef4;
+
+  --color-accent-100: #33202a;
+  --color-accent-200: #45262c;
+  --color-accent-300: #5c2e2c;
+  --color-accent-400: #cf593a;
+  --color-accent-500: #f2734f;
+  --color-accent-600: #ff9273;
+  --color-accent-700: #ffb59c;
+  --color-accent-800: #ffd7c9;
+  --color-accent-900: #ffeee8;
+
+  --color-accent-2-100: #241f3a;
+  --color-accent-2-200: #2f2850;
+  --color-accent-2-300: #3d3172;
+  --color-accent-2-400: #6f5cc0;
+  --color-accent-2-500: #8a76e0;
+  --color-accent-2-600: #a594f5;
+  --color-accent-2-700: #c2b5ff;
+  --color-accent-2-800: #ddd5ff;
+  --color-accent-2-900: #f0ecff;
+
+  /* Cartão de fatura (tela 1e) */
+  --color-card-fill: #55459a;
+  --color-card-blob-1: #6f5cc0;
+  --color-card-blob-2: #3d3172;
+  --color-card-chip: #c2b5ff;
+  --color-card-text: #f0ecff;
+
+  --font-heading: 'Newsreader', Georgia, serif;
+  --font-heading-weight: 400;
+  --font-body: 'Figtree', system-ui, sans-serif;
+
+  --space-1: 4.4px;
+  --space-2: 8.8px;
+  --space-3: 13.2px;
+  --space-4: 17.6px;
+  --space-6: 26.4px;
+  --space-8: 35.2px;
+
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-icon: 14px;
+  --radius-lg: 28px;
+  --radius-card: 26px;
+  --radius-nav: 30px;
+  --radius-sheet-top: 34px;
+  --radius-frame: 40px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 14px 36px rgba(0, 0, 0, 0.55);
+  --scrim: rgba(8, 4, 10, 0.62);
+
+  /* Cores das categorias sugeridas */
+  --cat-mercado: #f2734f;
+  --cat-alimentacao: #a594f5;
+  --cat-transporte: #ffb59c;
+  --cat-moradia: #9a8898;
+  --cat-saude: #6f5cc0;
+  --cat-educacao: #c2b5ff;
+  --cat-lazer: #e58fb3;
+  --cat-assinaturas: #8a76e0;
+  --cat-presentes: #ff9273;
+  --cat-agata: #ffd7c9;
+  --cat-encargos: #cf593a;
+  --cat-outros: #c3b3c1;
+}
+
+/* Paleta oferecida ao criar/editar categoria (tela 1k). */
+:root {
+  --paleta-categoria: #a594f5, #f2734f, #ffb59c, #e58fb3, #9a8898, #c2b5ff;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: var(--font-heading-weight);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* Valores monetários: até 20px em Figtree 700; acima disso, Newsreader. */
+.valor { font-family: var(--font-body); font-weight: 700; font-variant-numeric: tabular-nums; }
+.valor-destaque { font-family: var(--font-heading); font-weight: 400; line-height: 1.05; }
+
+a { color: var(--color-accent-600); }
+a:hover { color: var(--color-accent-700); }
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+::selection { background: var(--color-accent-300); color: var(--color-text); }
+
+:focus { outline: none; }
+:focus-visible { outline: 2px solid var(--color-accent-600); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
