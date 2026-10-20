@@ -111,6 +111,23 @@ export function FaturaCartaoScreen() {
     </div>
   )
 
+  // Ajustes (saldo anterior, principal de parcelamento): compõem o total da
+  // fatura (faturas_resumo), mas não são gasto — sem categoria (09).
+  const ajustesDaFatura = composicao && composicao.ajustes.length > 0 && (
+    <div className="fatura-bloco">
+      <span className="fatura-bloco-titulo">Ajustes da fatura</span>
+      <div className="fatura-compras">
+        {composicao.ajustes.map((a) => (
+          <div key={a.id} className="fatura-compra fatura-ajuste">
+            <span className="fatura-compra-desc"><strong>{a.descricao}</strong></span>
+            <span className="valor fatura-compra-valor fatura-ajuste-valor">{formatValorCurto(a.valor_centavos)}</span>
+          </div>
+        ))}
+      </div>
+      <span className="fatura-ajuste-legenda">Compõe o total da fatura, não conta como gasto</span>
+    </div>
+  )
+
   // ---------------------------------------------------------- computador (2b)
   if (ehComputador) {
     return (
@@ -156,6 +173,7 @@ export function FaturaCartaoScreen() {
                 </div>
                 {listaCompras}
               </div>
+              {ajustesDaFatura}
             </div>
             <div className="fatura-pc-coluna">
               {comoFoiPaga}
@@ -225,6 +243,7 @@ export function FaturaCartaoScreen() {
             </Button>
           )}
           {mostrarCompras && listaCompras}
+          {ajustesDaFatura}
         </>
       ))}
 

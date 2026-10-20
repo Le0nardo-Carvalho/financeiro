@@ -9,7 +9,7 @@ import { formatDataLonga, formatMesAno, type ISODate } from '../../lib/calc/data
 import { gerarPreviaParcelas, primeiraFatura, type Cartao as CartaoCalc } from '../../lib/calc/parcelas'
 import { mensagemDeErro } from '../../lib/queries/shared'
 import type { FormaPagamento } from '../../types/database'
-import { Button, Dialog, Field, Input, Seg } from '../../components/ui'
+import { Button, Dialog, Field, Input, Seg, Tag } from '../../components/ui'
 import './DetalheLancamentoScreen.css'
 
 const ROTULO_PAGAMENTO: Record<FormaPagamento, string> = { pix: 'Pix', debito: 'Débito', credito: 'Crédito' }
@@ -73,7 +73,15 @@ export function DetalheLancamentoScreen() {
           <div className="detalhe-lanc-resumo">
             <span className="detalhe-lanc-valor">{formatCentavos(compra.valor_total_centavos)}</span>
             <span className="text-muted">{formatDataLonga(compra.data_compra)} · {ROTULO_PAGAMENTO[compra.forma_pagamento]}</span>
+            {compra.origem === 'importacao' && <span><Tag>Importada do extrato</Tag></span>}
           </div>
+
+          {compra.observacoes && (
+            <div className="detalhe-lanc-observacoes">
+              <span className="kicker">Observações</span>
+              <p>{compra.observacoes}</p>
+            </div>
+          )}
 
           <Field label="Categoria">
             <select
