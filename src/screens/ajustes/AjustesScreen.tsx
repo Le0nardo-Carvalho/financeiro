@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ChevronRight, CreditCard, Download, LogOut, Tag, Target } from 'lucide-react'
+import { ArrowDownLeft, ChevronRight, CreditCard, Download, LogOut, Scale, ShieldCheck, Tag, Target } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { usePerfil } from '../../lib/queries/perfil'
 import { useCategorias } from '../../lib/queries/categorias'
@@ -24,7 +24,7 @@ export function AjustesScreen() {
     setExportando(true)
     setErroExportacao(null)
     try {
-      const [categorias, cartoes, compras, lancamentos, objetivos, movimentos, listas, itens, faturas, pagamentos] = await Promise.all([
+      const [categorias, cartoes, compras, lancamentos, objetivos, movimentos, listas, itens, faturas, pagamentos, ajustes, entradas, minimoItens] = await Promise.all([
         supabase.from('categorias').select('*'),
         supabase.from('cartoes').select('*'),
         supabase.from('compras').select('*'),
@@ -35,6 +35,9 @@ export function AjustesScreen() {
         supabase.from('itens_lista').select('*'),
         supabase.from('faturas').select('*'),
         supabase.from('pagamentos_fatura').select('*'),
+        supabase.from('ajustes_fatura').select('*'),
+        supabase.from('entradas').select('*'),
+        supabase.from('minimo_itens').select('*'),
       ])
 
       const pacote = {
@@ -50,6 +53,10 @@ export function AjustesScreen() {
         faturas: faturas.data,
         // Pagamentos de fatura vão no arquivo para backup; não são gastos.
         pagamentos_fatura: pagamentos.data,
+        // Ajustes compõem o total da fatura; entradas são o que entrou. Nenhum dos dois é gasto.
+        ajustes_fatura: ajustes.data,
+        entradas: entradas.data,
+        minimo_itens: minimoItens.data,
       }
 
       const blob = new Blob([JSON.stringify(pacote, null, 2)], { type: 'application/json' })
@@ -112,6 +119,36 @@ export function AjustesScreen() {
           <span style={{ flex: 1 }}>
             <span className="atalho-titulo">Objetivos</span>
             <span className="atalho-desc">metas e valores guardados</span>
+          </span>
+          <ChevronRight size={17} strokeWidth={2.75} color="var(--color-neutral-600)" />
+        </button>
+        <button type="button" className="atalho-card" onClick={() => navigate(rotas.ajustarMinimo)}>
+          <span className="atalho-icone atalho-icone-coral">
+            <ShieldCheck size={18} strokeWidth={2.75} />
+          </span>
+          <span style={{ flex: 1 }}>
+            <span className="atalho-titulo">Mínimo mensal</span>
+            <span className="atalho-desc">mercado, contas fixas e margem de alerta</span>
+          </span>
+          <ChevronRight size={17} strokeWidth={2.75} color="var(--color-neutral-600)" />
+        </button>
+        <button type="button" className="atalho-card" onClick={() => navigate(rotas.entradas)}>
+          <span className="atalho-icone atalho-icone-lilas">
+            <ArrowDownLeft size={18} strokeWidth={2.75} />
+          </span>
+          <span style={{ flex: 1 }}>
+            <span className="atalho-titulo">Entradas</span>
+            <span className="atalho-desc">renda, Pix recebido e reembolsos</span>
+          </span>
+          <ChevronRight size={17} strokeWidth={2.75} color="var(--color-neutral-600)" />
+        </button>
+        <button type="button" className="atalho-card" onClick={() => navigate(rotas.balancete)}>
+          <span className="atalho-icone atalho-icone-neutro">
+            <Scale size={18} strokeWidth={2.75} />
+          </span>
+          <span style={{ flex: 1 }}>
+            <span className="atalho-titulo">Balancete</span>
+            <span className="atalho-desc">entradas − gastos, mês a mês</span>
           </span>
           <ChevronRight size={17} strokeWidth={2.75} color="var(--color-neutral-600)" />
         </button>

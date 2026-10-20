@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { Check, Plus, ShoppingCart, X } from 'lucide-react'
 import { useCriarListaMercado, useListasMercado, useReabrirLista, type ListaMercadoResumo } from '../../lib/queries/mercado'
 import { mensagemDeErro } from '../../lib/queries/shared'
@@ -31,7 +31,9 @@ export function MercadoScreen() {
   const criar = useCriarListaMercado()
   const reabrir = useReabrirLista()
   const navigate = useNavigate()
-  const [criando, setCriando] = useState(false)
+  // "Lista de mercado" no "+" (3d) chega aqui já com a folha de nova lista aberta.
+  const location = useLocation()
+  const [criando, setCriando] = useState(() => Boolean((location.state as { novaLista?: boolean } | null)?.novaLista))
   const [nome, setNome] = useState('')
   const [cancelando, setCancelando] = useState<ListaMercadoResumo | null>(null)
   const [erro, setErro] = useState<string | null>(null)

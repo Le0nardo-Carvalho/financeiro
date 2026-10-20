@@ -1,0 +1,15 @@
+.registrar-opcoes { display: flex; flex-direction: column; gap: 10px; }
+.registrar-opcao {
+  display: flex; align-items: center; gap: 14px; width: 100%; text-align: left; cursor: pointer;
+  background: var(--color-surface); border: none; border-radius: 22px; padding: 14px 16px;
+  color: var(--color-neutral-700); min-height: 72px;
+}
+.registrar-opcao:hover { background: var(--color-neutral-100); }
+.registrar-icone { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; flex: none; }
+.registrar-icone-gasto { background: var(--color-accent-200); color: var(--color-accent-600); }
+.registrar-icone-entrada { background: var(--color-accent-2-300); color: var(--color-accent-2-900); }
+.registrar-icone-lista { background: var(--color-surface); color: var(--color-accent-600); }
+.registrar-texto { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.registrar-titulo { font-size: 15px; font-weight: 700; color: var(--color-text); }
+.registrar-desc { font-size: 12px; color: var(--color-neutral-600); }
+.registrar-cancelar { align-self: center; color: var(--color-neutral-700); font-weight: 700; font-size: 14px; padding: 10px 18px; }

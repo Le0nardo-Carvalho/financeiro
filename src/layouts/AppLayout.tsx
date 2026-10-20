@@ -1,14 +1,17 @@
-import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import {
-  CreditCard, Home, Plus, Receipt, Settings2, ShoppingCart, Tag, Target,
+  ArrowDownLeft, CreditCard, Home, Plus, Receipt, Scale, Settings2, ShoppingCart, Tag, Target,
 } from 'lucide-react'
 import { rotas } from '../router/rotas'
 import { OfflineBanner } from '../components/OfflineBanner'
+import { RegistrarSheet } from '../components/RegistrarSheet'
 import './AppLayout.css'
 
 const ICON_PROPS = { size: 21, strokeWidth: 2.75 }
 
 // Celular: Início · Gastos · [+] · Mercado · Ajustes (07, "Navegação").
+// O "+" abre a escolha Gasto / Entrada / Lista de mercado (3d).
 // Categorias abre pelo "Ver todas" do Início e pelo item Categorias em Ajustes.
 const NAV_MOBILE_ESQUERDA = [
   { to: rotas.dashboard, label: 'Início', icon: <Home {...ICON_PROPS} />, end: true },
@@ -22,6 +25,8 @@ const NAV_MOBILE_DIREITA = [
 const NAV_DESKTOP = [
   { to: rotas.dashboard, label: 'Início', icon: <Home size={18} strokeWidth={2.75} />, end: true },
   { to: rotas.lancamentos, label: 'Lançamentos', icon: <Receipt size={18} strokeWidth={2.75} /> },
+  { to: rotas.entradas, label: 'Entradas', icon: <ArrowDownLeft size={18} strokeWidth={2.75} /> },
+  { to: rotas.balancete, label: 'Balancete', icon: <Scale size={18} strokeWidth={2.75} /> },
   { to: rotas.cartoes, label: 'Cartões e faturas', icon: <CreditCard size={18} strokeWidth={2.75} /> },
   { to: rotas.categorias, label: 'Categorias', icon: <Tag size={18} strokeWidth={2.75} /> },
   { to: rotas.objetivos, label: 'Objetivos', icon: <Target size={18} strokeWidth={2.75} /> },
@@ -51,7 +56,7 @@ function ItemBarra({ to, label, icon, end }: { to: string; label: string; icon: 
 
 export function AppLayout() {
   const { pathname } = useLocation()
-  const navigate = useNavigate()
+  const [registrando, setRegistrando] = useState(false)
   const comBarra = ROTAS_COM_BARRA.includes(pathname.replace(/\/$/, '') || '/')
 
   return (
@@ -91,14 +96,16 @@ export function AppLayout() {
             <button
               type="button"
               className="app-bottom-nav-mais"
-              onClick={() => navigate(rotas.novoLancamento)}
-              aria-label="Novo gasto"
+              onClick={() => setRegistrando(true)}
+              aria-label="Registrar"
+              aria-haspopup="dialog"
             >
               <Plus size={24} strokeWidth={3} />
             </button>
             {NAV_MOBILE_DIREITA.map((item) => <ItemBarra key={item.to} {...item} />)}
           </nav>
         )}
+        {registrando && <RegistrarSheet onClose={() => setRegistrando(false)} />}
       </div>
     </div>
   )
