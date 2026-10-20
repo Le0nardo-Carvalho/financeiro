@@ -18,6 +18,11 @@ import { ListaMercadoDetalheScreen } from './screens/mercado/ListaMercadoDetalhe
 import { ObjetivosScreen } from './screens/objetivos/ObjetivosScreen'
 import { ObjetivoDetalheScreen } from './screens/objetivos/ObjetivoDetalheScreen'
 import { AjustesScreen } from './screens/ajustes/AjustesScreen'
+import { EntradasScreen } from './screens/entradas/EntradasScreen'
+import { NovaEntradaScreen } from './screens/entradas/NovaEntradaScreen'
+import { MinimoScreen } from './screens/minimo/MinimoScreen'
+import { AjustarMinimoScreen } from './screens/minimo/AjustarMinimoScreen'
+import { BalanceteScreen } from './screens/balancete/BalanceteScreen'
 
 function ProtegidoOuAcesso({ children }: { children: React.ReactNode }) {
   const { session, carregando } = useAuth()
@@ -58,6 +63,12 @@ export default function App() {
         <Route path="objetivos" element={<ObjetivosScreen />} />
         <Route path="objetivos/:id" element={<ObjetivoDetalheScreen />} />
         <Route path="ajustes" element={<AjustesScreen />} />
+        <Route path="entradas" element={<EntradasScreen />} />
+        <Route path="entradas/nova" element={<NovaEntradaScreen />} />
+        <Route path="entradas/:id" element={<NovaEntradaScreen />} />
+        <Route path="minimo" element={<MinimoScreen />} />
+        <Route path="minimo/ajustar" element={<AjustarMinimoScreen />} />
+        <Route path="balancete" element={<BalanceteScreen />} />
       </Route>
       <Route path="*" element={<Navigate to={rotas.dashboard} replace />} />
     </Routes>

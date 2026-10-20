@@ -1,0 +1,45 @@
+.bal-tela { display: flex; flex-direction: column; gap: 14px; max-width: 640px; width: 100%; }
+.bal-cabecalho { display: flex; align-items: center; gap: 12px; }
+.bal-titulo { flex: 1; font-family: var(--font-heading); font-size: 22px; }
+
+.bal-seg { display: inline-flex; gap: 2px; padding: 4px; border-radius: var(--radius-pill); background: var(--color-surface); }
+.bal-seg-opt { border: none; background: transparent; color: var(--color-neutral-700); border-radius: var(--radius-pill); padding: 7px 13px; font-size: 13px; cursor: pointer; min-height: 36px; }
+.bal-seg-ativo { background: var(--color-accent); color: var(--color-bg); font-weight: 700; }
+
+.bal-rotulo { display: block; font-size: 12.5px; color: var(--color-neutral-600); }
+.bal-resultado { display: block; font-size: 44px; margin-top: 2px; }
+.bal-negativo { color: var(--color-accent-600); }
+.bal-positivo { color: var(--color-accent-2-600); }
+
+.bal-legenda { display: flex; justify-content: space-between; margin-top: 10px; }
+.bal-legenda > span { display: flex; flex-direction: column; }
+.bal-legenda-fim { align-items: flex-end; }
+.bal-legenda-rotulo { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--color-neutral-600); }
+.bal-legenda-valor { font-size: 15px; margin-top: 2px; }
+.bal-ponto { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.bal-ponto-entrou { background: var(--color-accent-2-600); }
+.bal-ponto-gastou { background: var(--color-accent); }
+
+.bal-grafico { display: flex; justify-content: space-between; align-items: flex-end; gap: 4px; background: var(--color-surface); border-radius: var(--radius-card); padding: 16px 14px 10px; }
+.bal-coluna { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.bal-barras { display: flex; align-items: flex-end; gap: 3px; height: 84px; }
+.bal-barra { width: 9px; border-radius: 99px 99px 4px 4px; transition: height 300ms cubic-bezier(.2,.8,.2,1); }
+.bal-barra-entrou { background: var(--color-accent-2-600); }
+.bal-barra-gastou { background: var(--color-accent); }
+.bal-coluna-rotulo { font-size: 10.5px; color: var(--color-neutral-600); }
+.bal-coluna-rotulo-atual { color: var(--color-text); font-weight: 700; }
+
+.bal-tabela { background: var(--color-surface); border-radius: var(--radius-card); padding: 6px 16px; }
+.bal-linha { display: grid; grid-template-columns: 0.7fr 1fr 1fr 1fr 1fr; gap: 6px; padding: 9px 0; font-size: 13px; }
+.bal-linha + .bal-linha { border-top: 1px solid var(--color-divider); }
+.bal-linha > span:not(:first-child) { text-align: right; }
+.bal-linha-cabecalho { font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-neutral-600); font-weight: 700; }
+.bal-linha-selecionada { background: var(--color-neutral-100); margin: 0 -8px; padding-inline: 8px; border-radius: 10px; }
+.bal-cel-resultado { font-weight: 700; }
+.bal-cel-acumulado.bal-negativo { color: var(--color-accent-700); }
+.bal-cel-acumulado.bal-positivo { color: var(--color-accent-2-700); }
+
+.bal-nota { margin: 0; font-size: 12px; line-height: 1.5; color: var(--color-neutral-600); }
+
+@media (prefers-reduced-motion: reduce) { .bal-barra { transition: none; } }
+@media (max-width: 380px) { .bal-linha { font-size: 12px; gap: 4px; } }

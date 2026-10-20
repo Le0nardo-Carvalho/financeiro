@@ -1,0 +1,45 @@
+.ajmin-tela { display: flex; flex-direction: column; gap: 14px; max-width: 640px; width: 100%; }
+.ajmin-cabecalho { display: flex; align-items: center; gap: 12px; }
+.ajmin-titulo { flex: 1; font-family: var(--font-heading); font-size: 22px; }
+
+.ajmin-secao { display: flex; flex-direction: column; gap: 8px; }
+.ajmin-secao .kicker { font-weight: 700; }
+.ajmin-card { background: var(--color-surface); border-radius: var(--radius-card); padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+.ajmin-card-lista { padding-block: 4px 10px; gap: 0; }
+.ajmin-linha { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 14px; }
+
+.ajmin-seg { display: inline-flex; gap: 2px; padding: 3px; border-radius: var(--radius-pill); background: var(--color-bg); }
+.ajmin-seg-opt { border: none; background: transparent; color: var(--color-neutral-800); border-radius: var(--radius-pill); padding: 7px 12px; font-size: 13px; cursor: pointer; min-height: 36px; }
+.ajmin-seg-ativo { background: var(--color-accent); color: var(--color-bg); font-weight: 700; }
+
+.ajmin-categoria { position: relative; display: inline-flex; align-items: center; gap: 7px; font-weight: 700; }
+.ajmin-ponto { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.ajmin-select { position: absolute; inset: 0; width: 100%; opacity: 0; cursor: pointer; font: inherit; }
+.ajmin-categoria:focus-within { outline: 2px solid var(--color-accent-600); outline-offset: 3px; border-radius: 8px; }
+.ajmin-select option { background: var(--color-surface); color: var(--color-text); }
+
+.ajmin-media { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--color-neutral-100); border-radius: 18px; padding: 11px 14px; }
+.ajmin-media-meses { font-size: 11.5px; color: var(--color-neutral-600); }
+.ajmin-media-valor { font-size: 15px; }
+
+.ajmin-conta { display: flex; align-items: center; gap: 12px; padding: 11px 0; }
+.ajmin-conta + .ajmin-conta { border-top: 1px solid var(--color-divider); }
+.ajmin-conta-icone { width: 34px; height: 34px; border-radius: 12px; background: var(--color-neutral-100); display: grid; place-items: center; flex: none; }
+.ajmin-conta-corpo { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; text-align: left; background: none; border: none; color: inherit; cursor: pointer; padding: 0; }
+.ajmin-conta-nome { font-size: 14px; font-weight: 700; }
+.ajmin-conta-termo { font-size: 11.5px; color: var(--color-neutral-600); }
+.ajmin-valor {
+  width: 96px; min-height: 40px; padding: 8px 14px; border-radius: var(--radius-pill); border: 1px solid transparent;
+  background: var(--color-bg); color: var(--color-text); font: inherit; font-weight: 700; font-size: 15px; text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.ajmin-valor:focus-visible { border-color: var(--color-accent); outline-offset: 0; }
+
+.ajmin-adicionar { display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; padding: 10px 0 2px; background: none; border: none; color: var(--color-accent-600); font: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; }
+
+.ajmin-nivel { display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--color-neutral-700); }
+.ajmin-nivel-selo { width: 96px; flex: none; text-align: center; border-radius: var(--radius-pill); padding: 4px 0; font-size: 12px; font-weight: 700; }
+
+.ajmin-rodape { display: flex; flex-direction: column; gap: 12px; margin-top: 4px; }
+.ajmin-total { display: flex; align-items: baseline; justify-content: space-between; font-size: 13px; color: var(--color-neutral-700); padding: 0 4px; }
+.ajmin-total-valor { font-size: 24px; color: var(--color-text); }

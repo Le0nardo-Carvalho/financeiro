@@ -14,4 +14,10 @@ export const rotas = {
   objetivos: '/objetivos',
   objetivo: (id: string) => `/objetivos/${id}`,
   ajustes: '/ajustes',
+  entradas: '/entradas',
+  novaEntrada: '/entradas/nova',
+  entrada: (id: string) => `/entradas/${id}`,
+  minimo: '/minimo',
+  ajustarMinimo: '/minimo/ajustar',
+  balancete: '/balancete',
 } as const

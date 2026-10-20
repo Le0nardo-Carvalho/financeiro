@@ -1,0 +1,48 @@
+.saude-painel { display: flex; flex-direction: column; gap: 12px; }
+.saude-carregando { height: 180px; border-radius: var(--radius-card); background: var(--color-surface); opacity: 0.5; }
+.saude-negativo { color: var(--color-accent-600); }
+
+.saude-sobra-rotulo { display: block; font-size: 12.5px; color: var(--color-neutral-600); }
+.saude-sobra-valor { display: block; font-size: 50px; line-height: 1.08; margin-top: 2px; }
+.saude-sobra-barra { display: flex; gap: 4px; height: 10px; margin-top: 12px; }
+.saude-sobra-barra > span { border-radius: 99px; transition: flex-grow 300ms cubic-bezier(.2,.8,.2,1); }
+.saude-sobra-gastou { background: var(--color-accent); }
+.saude-sobra-resto { background: var(--color-accent-2-600); min-width: 10px; }
+.saude-sobra-legenda { display: flex; justify-content: space-between; margin-top: 10px; }
+.saude-sobra-item { display: flex; flex-direction: column; text-decoration: none; color: inherit; }
+.saude-sobra-item-fim { align-items: flex-end; }
+.saude-sobra-item-rotulo { display: flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--color-neutral-600); }
+.saude-sobra-item-valor { font-size: 15px; margin-top: 2px; }
+.saude-sobra-previsto { font-size: 11px; color: var(--color-neutral-600); }
+.saude-ponto { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.saude-ponto-entrou { background: var(--color-accent-2-600); }
+.saude-ponto-gastou { background: var(--color-accent); }
+
+.saude-minimo {
+  background: var(--color-surface); border-radius: var(--radius-lg); padding: 16px 18px;
+  display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: inherit;
+}
+.saude-minimo-topo { display: flex; justify-content: space-between; align-items: baseline; }
+.saude-minimo-titulo { font-family: var(--font-heading); font-size: 16px; }
+.saude-minimo-total { font-size: 15px; }
+.saude-minimo-legenda { display: flex; justify-content: space-between; font-size: 12px; color: var(--color-neutral-700); }
+.saude-minimo-legenda strong { color: var(--color-text); }
+.saude-minimo-legenda strong.saude-negativo { color: var(--color-accent-600); }
+
+.saude-atalhos { display: flex; gap: 10px; }
+.saude-atalho {
+  flex: 1; min-width: 0; background: var(--color-surface); border-radius: 24px; padding: 13px 15px;
+  display: flex; flex-direction: column; gap: 2px; text-decoration: none; color: inherit;
+}
+.saude-atalho-rotulo { font-size: 11.5px; color: var(--color-neutral-600); }
+.saude-atalho-valor { font-size: 15px; }
+.saude-atalho-meta { font-size: 11px; color: var(--color-neutral-600); }
+
+/* Computador: sobra | alerta + mínimo | atalhos, lado a lado. */
+@media (min-width: 1024px) {
+  .saude-painel-computador { display: grid; grid-template-columns: 1.1fr 1fr 1fr; align-items: start; gap: 18px; }
+  .saude-painel-computador .saude-sobra { grid-row: span 2; background: var(--color-surface); border-radius: var(--radius-card); padding: 18px 20px; }
+  .saude-painel-computador .saude-atalhos { grid-column: 2 / 4; }
+}
+
+@media (prefers-reduced-motion: reduce) { .saude-sobra-barra > span { transition: none; } }

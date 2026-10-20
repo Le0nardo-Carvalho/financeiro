@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../supabase'
 import { useGravacao } from './shared'
 import type {
-  Fatura, FaturaResumo, LancamentoMensal, Compra, Categoria, MeioPagamentoFatura, PagamentoFatura,
+  AjusteFatura, Fatura, FaturaResumo, LancamentoMensal, Compra, Categoria, MeioPagamentoFatura, PagamentoFatura,
 } from '../../types/database'
 import type { ISODate } from '../calc/datas'
 
@@ -28,10 +28,12 @@ export interface ItemComposicaoFatura {
   categoria: Categoria
 }
 
+// O TOTAL da fatura não sai daqui: vem de faturas_resumo.total_centavos,
+// que soma lançamentos + ajustes (0006). Isto é só a composição das compras.
 export interface FaturaComComposicao {
   fatura: Fatura
   itens: ItemComposicaoFatura[]
-  totalCentavos: number
+  ajustes: AjusteFatura[] // compõem o total da fatura, não são gasto
   parcelasAnterioresCentavos: number // numero_parcela > 1: compras de ciclos anteriores
   desteCicloCentavos: number // numero_parcela === 1: novas compras deste ciclo
 }
@@ -41,16 +43,22 @@ export function useFatura(faturaId: string | undefined) {
     queryKey: ['fatura', faturaId],
     enabled: Boolean(faturaId),
     queryFn: async (): Promise<FaturaComComposicao> => {
-      const [{ data: fatura, error: erroFatura }, { data: lancamentos, error: erroLanc }] = await Promise.all([
+      const [
+        { data: fatura, error: erroFatura },
+        { data: lancamentos, error: erroLanc },
+        { data: ajustes, error: erroAjustes },
+      ] = await Promise.all([
         supabase.from('faturas').select('*').eq('id', faturaId as string).single(),
         supabase
           .from('lancamentos_mensais')
           .select('*, compra:compras(*, categoria:categorias(*))')
           .eq('fatura_id', faturaId as string)
           .order('criado_em'),
+        supabase.from('ajustes_fatura').select('*').eq('fatura_id', faturaId as string).order('criado_em'),
       ])
       if (erroFatura) throw erroFatura
       if (erroLanc) throw erroLanc
+      if (erroAjustes) throw erroAjustes
 
       type Linha = LancamentoMensal & { compra: Compra & { categoria: Categoria } }
       const linhas = lancamentos as unknown as Linha[]
@@ -61,13 +69,20 @@ export function useFatura(faturaId: string | undefined) {
         categoria: l.compra.categoria,
       }))
 
-      const totalCentavos = itens.reduce((s, i) => s + i.lancamento.valor_centavos, 0)
       const parcelasAnterioresCentavos = itens
         .filter((i) => i.lancamento.numero_parcela > 1)
         .reduce((s, i) => s + i.lancamento.valor_centavos, 0)
-      const desteCicloCentavos = totalCentavos - parcelasAnterioresCentavos
+      const desteCicloCentavos = itens
+        .filter((i) => i.lancamento.numero_parcela === 1)
+        .reduce((s, i) => s + i.lancamento.valor_centavos, 0)
 
-      return { fatura: fatura as Fatura, itens, totalCentavos, parcelasAnterioresCentavos, desteCicloCentavos }
+      return {
+        fatura: fatura as Fatura,
+        itens,
+        ajustes: (ajustes as AjusteFatura[]).map((a) => ({ ...a, valor_centavos: Number(a.valor_centavos) })),
+        parcelasAnterioresCentavos,
+        desteCicloCentavos,
+      }
     },
   })
 }
@@ -79,6 +94,8 @@ function normalizarResumo<T extends FaturaResumo>(f: T): T {
     total_centavos: Number(f.total_centavos),
     pago_centavos: Number(f.pago_centavos),
     saldo_centavos: Number(f.saldo_centavos),
+    gastos_centavos: Number(f.gastos_centavos),
+    ajustes_centavos: Number(f.ajustes_centavos),
   }
 }
 

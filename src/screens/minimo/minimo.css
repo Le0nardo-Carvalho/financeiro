@@ -1,0 +1,45 @@
+/* Mínimo mensal e saúde do mês (telas 3a, 3b, 3c). Só variáveis de tokens.css. */
+
+.minimo-barra { display: flex; gap: 4px; height: 10px; }
+.minimo-barra > span { border-radius: 99px; transition: flex-grow 300ms cubic-bezier(.2,.8,.2,1); }
+.minimo-barra-coberto { background: var(--color-accent-2-600); }
+.minimo-barra-falta { background: var(--color-accent-300); box-shadow: inset 0 0 0 1.5px var(--color-accent); min-width: 10px; }
+
+.minimo-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.minimo-chip {
+  display: inline-flex; align-items: center; gap: 5px; border-radius: var(--radius-pill); padding: 4px 10px;
+  font-size: 11.5px; background: var(--color-neutral-100);
+}
+.minimo-chip-ponto { width: 8px; height: 8px; border-radius: 50%; background: var(--color-accent); flex: none; }
+.minimo-chip-ok { background: var(--color-accent-2-200); color: var(--color-accent-2-800); gap: 4px; }
+.minimo-chip-pendente { background: var(--color-accent-200); color: var(--color-accent-800); }
+
+.minimo-selo { font-size: 10.5px; font-weight: 700; padding: 3px 8px; border-radius: var(--radius-pill); white-space: nowrap; }
+.minimo-selo-falta, .minimo-selo-acima { background: var(--color-accent-200); color: var(--color-accent-700); }
+.minimo-selo-pago { background: var(--color-accent-2-200); color: var(--color-accent-2-800); }
+
+/* Card de alerta (3a) — cores por nível (10, §3). */
+.saude-alerta { border-radius: 24px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+.saude-alerta-icone { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; flex: none; }
+.saude-alerta-corpo { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+.saude-alerta-titulo { font-size: 14.5px; font-weight: 700; }
+.saude-alerta-texto { font-size: 12.5px; line-height: 1.45; }
+.saude-alerta-link { font-size: 12.5px; font-weight: 700; margin-top: 4px; text-decoration: none; align-self: flex-start; }
+
+.saude-alto { background: var(--color-accent-200); color: var(--color-accent-800); }
+.saude-alto .saude-alerta-icone { background: var(--color-accent-300); color: var(--color-accent-600); }
+.saude-alto .saude-alerta-link { color: var(--color-accent-600); }
+
+.saude-atencao { background: var(--color-accent-100); color: var(--color-accent-700); }
+.saude-atencao .saude-alerta-icone { background: var(--color-accent-200); color: var(--color-accent-700); }
+.saude-atencao .saude-alerta-link { color: var(--color-accent-700); }
+
+.saude-tranquilo { background: var(--color-accent-2-200); color: var(--color-accent-2-800); }
+.saude-tranquilo .saude-alerta-icone { background: var(--color-accent-2-300); color: var(--color-accent-2-800); }
+.saude-tranquilo .saude-alerta-link { color: var(--color-accent-2-800); }
+
+.saude-sem_entradas { background: var(--color-surface); color: var(--color-neutral-800); }
+.saude-sem_entradas .saude-alerta-icone { background: var(--color-neutral-200); color: var(--color-neutral-800); }
+.saude-sem_entradas .saude-alerta-link { color: var(--color-accent-600); }
+
+@media (prefers-reduced-motion: reduce) { .minimo-barra > span { transition: none; } }

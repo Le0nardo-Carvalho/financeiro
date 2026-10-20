@@ -30,6 +30,7 @@ import { SeletorMes } from '../../components/SeletorMes'
 import { DonutChart } from '../../components/DonutChart'
 import { Button, Card, EmptyState } from '../../components/ui'
 import { rotas } from '../../router/rotas'
+import { SaudeDoMesPainel } from './SaudeDoMesPainel'
 import './DashboardScreen.css'
 
 type FaturaDoMes = FaturaResumo & { cartao: { apelido: string; cor: string } }
@@ -123,6 +124,7 @@ export function DashboardScreen() {
   return (
     <div className="dash">
       <CabecalhoCelular />
+      <SaudeDoMesPainel mes={mes} />
       {semGastos ? (
         <PrimeiroMesVazio onNovo={() => navigate(rotas.novoLancamento)} />
       ) : (
@@ -191,12 +193,14 @@ function PainelCelular({ dados }: { dados: DadosPainel }) {
   const { totais, credito } = dados
   return (
     <>
+      {/* A sobra, o alerta e o mínimo (3a) ocupam o topo; o total de gastos
+          desce para cá, como cabeçalho do detalhamento por forma. */}
       <div>
-        <div className="dash-total-rotulo">
-          <span>Gastos de {formatMesExtenso(dados.mes)}</span>
+        <div className="dash-secao-cabecalho">
+          <span className="secao-titulo">Gastos de {formatMesExtenso(dados.mes)}</span>
           <StatusSyncBadge />
         </div>
-        <div className="valor-destaque dash-total-valor">{formatCentavos(totais.totalCentavos)}</div>
+        <div className="valor dash-total-compacto">{formatCentavos(totais.totalCentavos)}</div>
         <div className="dash-comp">
           <ChipComparativo comparativo={dados.comparativo} />
           <TextoComparativo dados={dados} />
@@ -466,8 +470,11 @@ function PainelComputador({ dados, semGastos }: { dados: DadosPainel; semGastos:
         <StatusSyncBadge />
         <Button onClick={irParaMesAnterior}><ChevronLeft size={16} strokeWidth={2.75} /> Mês anterior</Button>
         <Button onClick={irParaProximoMes} aria-label="Próximo mês"><ChevronRight size={16} strokeWidth={2.75} /></Button>
+        <Button onClick={() => navigate(rotas.novaEntrada)}><Plus size={16} strokeWidth={3} /> Nova entrada</Button>
         <Button variant="primary" onClick={() => navigate(rotas.novoLancamento)}><Plus size={16} strokeWidth={3} /> Novo gasto</Button>
       </div>
+
+      <SaudeDoMesPainel mes={dados.mes} layout="computador" />
 
       {semGastos ? (
         <PrimeiroMesVazio onNovo={() => navigate(rotas.novoLancamento)} />

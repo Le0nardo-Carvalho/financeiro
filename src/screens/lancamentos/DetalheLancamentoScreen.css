@@ -4,3 +4,7 @@
 .detalhe-lanc-parcelas { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
 .detalhe-lanc-parcela-linha { display: flex; align-items: center; gap: 10px; font-size: 13px; padding: 8px 4px; border-bottom: 1px solid var(--color-divider); }
 .detalhe-lanc-acoes { display: flex; gap: 10px; }
+
+/* Observações (compras importadas trazem a linha do extrato aqui, 09). */
+.detalhe-lanc-observacoes { display: flex; flex-direction: column; gap: 4px; }
+.detalhe-lanc-observacoes p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--color-neutral-800); white-space: pre-wrap; }
