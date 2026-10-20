@@ -111,7 +111,12 @@ alter table compras add column if not exists conta_origem text;
 
 -- Situação derivada. A coluna faturas.paga deixa de ser escrita pelo app;
 -- mantida por compatibilidade e sincronizada abaixo.
-create or replace view faturas_resumo with (security_invoker = true) as
+-- Só cria a view se ela ainda não existir: o 0006 a amplia (ajustes de fatura) e
+-- reexecutar este arquivo depois dele não pode desfazer isso.
+do $view$ begin
+if to_regclass('public.faturas_resumo') is null then
+execute $sql$
+create view faturas_resumo with (security_invoker = true) as
 select f.*,
        coalesce(t.total, 0)  as total_centavos,
        coalesce(p.pago, 0)   as pago_centavos,
@@ -125,7 +130,10 @@ select f.*,
   left join (select fatura_id, sum(valor_centavos) total
                from lancamentos_mensais group by fatura_id) t on t.fatura_id = f.id
   left join (select fatura_id, sum(valor_centavos) pago
-               from pagamentos_fatura group by fatura_id) p on p.fatura_id = f.id;
+               from pagamentos_fatura group by fatura_id) p on p.fatura_id = f.id
+$sql$;
+end if;
+end $view$;
 
 create or replace function sincronizar_fatura_paga()
 returns trigger language plpgsql security definer set search_path = public as $$

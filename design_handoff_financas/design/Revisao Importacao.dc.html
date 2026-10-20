@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#171019;color:#f5eef4;font-family:'Figtree',system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}a{color:#ff9273}a:hover{color:#ffb59c}</style>
+</helmet>
+<div style="max-width:1080px;margin:0 auto;padding:40px 24px 80px;display:flex;flex-direction:column;gap:40px">
+  <header style="display:flex;flex-direction:column;gap:12px">
+    <div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#c3b3c1">Importação de extratos · jan–out 2026</div>
+    <h1 style="font-family:'Newsreader',Georgia,serif;font-weight:400;font-size:clamp(34px,5vw,52px);line-height:1.05;margin:0;text-wrap:pretty">Revise antes de rodar no Supabase</h1>
+    <p style="margin:0;max-width:640px;color:#c3b3c1;font-size:16px;line-height:1.55;text-wrap:pretty">11 faturas do Nubank e 10 extratos do Banco do Brasil viraram compras, parcelas e pagamentos do app. Pagamentos de fatura, transferências entre suas contas e entradas ficaram fora dos gastos.</p>
+  </header>
+
+  <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+    <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+      <div style="background:#261c28;border-radius:26px;padding:20px 22px;display:flex;flex-direction:column;gap:6px">
+        <div style="font-size:13px;color:#c3b3c1">{{ k.label }}</div>
+        <div style="font-family:'Newsreader',Georgia,serif;font-size:clamp(24px,3vw,32px);line-height:1.05;white-space:nowrap">{{ k.value }}</div>
+        <div style="font-size:13px;color:#9a8898">{{ k.sub }}</div>
+      </div>
+    </sc-for>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:16px">
+    <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:400;font-size:30px;margin:0">Gastos por mês</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:8px 16px">
+      <sc-for list="{{ legenda }}" as="c" hint-placeholder-count="8">
+        <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:#e5d9e3"><span style="width:10px;height:10px;border-radius:999px;background:{{ c.cor }}"></span>{{ c.nome }} <span style="color:#9a8898">{{ c.total }}</span></div>
+      </sc-for>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <sc-for list="{{ barras }}" as="b" hint-placeholder-count="10">
+        <div style="display:grid;grid-template-columns:64px minmax(0,1fr) 96px;align-items:center;gap:12px">
+          <div style="font-size:13px;color:#c3b3c1">{{ b.mes }}</div>
+          <div style="height:22px;border-radius:999px;background:#2f2331;overflow:hidden;display:flex">
+            <div style="display:flex;height:100%;width:{{ b.w }}">
+              <sc-for list="{{ b.seg }}" as="s" hint-placeholder-count="5"><div title="{{ s.t }}" style="height:100%;flex:{{ s.f }};background:{{ s.cor }}"></div></sc-for>
+            </div>
+          </div>
+          <div style="font-size:14px;font-weight:700;text-align:right">{{ b.total }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <p style="margin:0;font-size:13px;color:#9a8898">Competência do app: crédito no mês de vencimento da fatura, Pix e débito no mês da compra. Nov/2026 em diante são parcelas já previstas.</p>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:16px">
+    <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:400;font-size:30px;margin:0">Faturas Nubank</h2>
+    <div style="background:#261c28;border-radius:26px;padding:8px 0;overflow-x:auto">
+      <div style="min-width:640px;display:flex;flex-direction:column">
+        <div style="display:grid;grid-template-columns:90px repeat(4,minmax(0,1fr)) 96px;gap:12px;padding:12px 22px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#9a8898">
+          <div>Vence</div><div style="text-align:right">Gastos</div><div style="text-align:right">Ajustes</div><div style="text-align:right">Total</div><div style="text-align:right">Pago</div><div style="text-align:right">Situação</div>
+        </div>
+        <sc-for list="{{ faturas }}" as="f" hint-placeholder-count="11">
+          <div style="display:grid;grid-template-columns:90px repeat(4,minmax(0,1fr)) 96px;gap:12px;padding:12px 22px;border-top:1px solid rgba(245,238,244,.08);font-size:14px;align-items:center">
+            <div style="color:#e5d9e3">{{ f.mes }}</div>
+            <div style="text-align:right">{{ f.gastos }}</div>
+            <div style="text-align:right;color:#9a8898">{{ f.ajustes }}</div>
+            <div style="text-align:right;font-weight:700">{{ f.total }}</div>
+            <div style="text-align:right">{{ f.pago }}</div>
+            <div style="display:flex;justify-content:flex-end"><span style="font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:{{ f.bg }};color:{{ f.fg }}">{{ f.sit }}</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <p style="margin:0;font-size:13px;color:#9a8898;max-width:760px;text-wrap:pretty">Ajustes compõem o total da fatura sem contar como gasto: o saldo rotativo de dez/2025 (jan) e o principal dos dois parcelamentos de fatura (abr e set). Só os juros desses parcelamentos entram como gasto, em Encargos. Os centavos de diferença em jun–set são arredondamentos de IOF do próprio Nubank.</p>
+  </section>
+
+  <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:24px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:400;font-size:30px;margin:0">Caiu em “Outros”</h2>
+      <p style="margin:0;font-size:14px;color:#c3b3c1;text-wrap:pretty">Pix para pessoas e lojas sem nome claro. Diga a categoria dos maiores e eu ajusto o script — ou reclassifique no app depois.</p>
+      <div style="background:#261c28;border-radius:26px;padding:6px 0;display:flex;flex-direction:column">
+        <sc-for list="{{ outros }}" as="r" hint-placeholder-count="12">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:10px 20px;border-top:1px solid rgba(245,238,244,.06);align-items:center">
+            <div style="display:flex;flex-direction:column;min-width:0">
+              <div style="font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.d }}</div>
+              <div style="font-size:12px;color:#9a8898">{{ r.meta }}</div>
+            </div>
+            <div style="font-size:14px;font-weight:700">{{ r.v }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <button onClick="{{ toggleOutros }}" style="align-self:flex-start;border:0;border-radius:999px;padding:10px 18px;background:#33202a;color:#ffb59c;font-weight:700;font-size:14px;cursor:pointer" style-hover="background:#45262c">{{ outrosBtn }}</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:400;font-size:30px;margin:0">Fora dos gastos</h2>
+      <p style="margin:0;font-size:14px;color:#c3b3c1;text-wrap:pretty">Linhas dos extratos que não viraram despesa, para não contar duas vezes.</p>
+      <div style="background:#261c28;border-radius:26px;padding:6px 0;display:flex;flex-direction:column">
+        <sc-for list="{{ ignorados }}" as="g" hint-placeholder-count="8">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:12px 20px;border-top:1px solid rgba(245,238,244,.06);align-items:center">
+            <div style="display:flex;flex-direction:column">
+              <div style="font-size:14px;text-wrap:pretty">{{ g.why }}</div>
+              <div style="font-size:12px;color:#9a8898">{{ g.n }} linha(s)</div>
+            </div>
+            <div style="font-size:14px;font-weight:700;color:#c2b5ff">{{ g.v }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section style="display:flex;flex-direction:column;gap:12px;max-width:760px">
+    <h2 style="font-family:'Newsreader',Georgia,serif;font-weight:400;font-size:30px;margin:0">Suposições para confirmar</h2>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <sc-for list="{{ suposicoes }}" as="s" hint-placeholder-count="5">
+        <div style="display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;font-size:15px;line-height:1.5;color:#e5d9e3">
+          <span style="width:28px;height:28px;border-radius:999px;background:#2f2850;color:#c2b5ff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">{{ s.n }}</span>
+          <span style="text-wrap:pretty">{{ s.t }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { r: null, todos: false };
+  componentDidMount() {
+    fetch('revisao-importacao.json').then(x => x.json()).then(r => this.setState({ r }));
+  }
+  renderVals() {
+    const r = this.state.r;
+    const brl = c => (c / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    const MES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+    const lm = m => MES[+m.slice(5) - 1] + '/' + m.slice(2, 4);
+    const CORES = { 'Mercado':'#f2734f','Alimentação':'#a594f5','Transporte':'#ffb59c','Moradia':'#9a8898','Saúde':'#6f5cc0','Educação':'#c2b5ff','Lazer':'#e58fb3','Assinaturas':'#8a76e0','Presentes':'#ff9273','Ágata':'#ffd7c9','Encargos':'#cf593a','Impostos':'#ddd5ff','Outros':'#554755' };
+    const suposicoes = [
+      'Pix para “Leonardo Carvalho Elias” e a poupança são transferências entre contas suas — fora dos gastos (R$ 9.560,53 no período).',
+      '14 pagamentos de fatura não aparecem no BB; ficaram com origem “não informada” (provavelmente saldo da conta Nubank).',
+      'Entradas (M Dumont Bordados, Pix recebidos, FGTS) vão para a nova tabela de entradas pelo 0009 — R$ 38.417,46 em 45 lançamentos.',
+      'Cresci e Perdi, enxoval e Corre Cotia foram para a categoria Ágata; DAS/MEI e Receita Federal para a nova categoria Impostos.',
+      'Compras parceladas iniciadas antes de jan/2026 entram só com as parcelas a partir da fatura de janeiro.'
+    ].map((t, i) => ({ n: i + 1, t }));
+    if (!r) return { kpis: [], legenda: [], barras: [], faturas: [], outros: [], ignorados: [], suposicoes, outrosBtn: '', toggleOutros: () => {} };
+    const meses = Object.keys(r.meses).sort();
+    const tot = m => Object.values(r.meses[m]).reduce((a, b) => a + b, 0);
+    const max = Math.max(...meses.map(tot));
+    const ordem = Object.entries(r.catTot).sort((a, b) => b[1] - a[1]).map(e => e[0]);
+    const periodo = meses.filter(m => m <= '2026-10').reduce((a, m) => a + tot(m), 0);
+    const totOutros = r.catTot['Outros'] || 0;
+    const outrosList = (this.state.todos ? r.outros : r.outros.slice(0, 12)).map(o => ({ d: o.d, v: brl(o.v), meta: `${o.orig} · ${o.n}× · última ${o.ultima.slice(8)}/${o.ultima.slice(5,7)}` }));
+    return {
+      kpis: [
+        { label: 'Gastos jan–out', value: brl(periodo), sub: 'média ' + brl(periodo / 10) + '/mês' },
+        { label: 'Compras importadas', value: String(r.totais.compras), sub: `${r.totais.nu} Nubank · ${r.totais.bb} BB` },
+        { label: 'Pagamentos de fatura', value: String(r.totais.pags), sub: 'nenhum soma como gasto' },
+        { label: 'Em “Outros”', value: brl(totOutros), sub: Math.round(totOutros / periodo * 100) + '% — vale revisar' }
+      ],
+      legenda: ordem.map(c => ({ nome: c, cor: CORES[c] || '#776675', total: brl(r.catTot[c]) })),
+      barras: meses.map(m => ({ mes: lm(m), total: brl(tot(m)), w: (tot(m) / max * 100).toFixed(1) + '%',
+        seg: ordem.filter(c => r.meses[m][c]).map(c => ({ f: r.meses[m][c], cor: CORES[c] || '#776675', t: c + ': ' + brl(r.meses[m][c]) })) })),
+      faturas: r.faturas.map(f => ({ mes: '12/' + lm(f.m), gastos: brl(f.gastos), ajustes: f.ajustes ? brl(f.ajustes) : '—', total: brl(f.total), pago: f.pago ? brl(f.pago) : '—',
+        sit: f.m > '2026-11' ? 'prevista' : f.sit, bg: f.sit === 'paga' ? '#2f2850' : '#33202a', fg: f.sit === 'paga' ? '#c2b5ff' : '#ffb59c' })),
+      outros: outrosList,
+      outrosBtn: this.state.todos ? 'Mostrar só os 12 maiores' : `Ver todos (${r.outros.length})`,
+      toggleOutros: () => this.setState(s => ({ todos: !s.todos })),
+      ignorados: r.ignorados.map(g => ({ why: g.why, n: g.n, v: brl(g.v) })),
+      suposicoes
+    };
+  }
+}
+</script>
+</body>
+</html>
