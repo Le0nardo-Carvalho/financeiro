@@ -1,15 +1,19 @@
-// Tipos manuais espelhando supabase/migrations/0001_initial.sql a 0005_nova_paleta.sql.
+// Tipos manuais espelhando supabase/migrations/0001_initial.sql a 0009_entradas_jan_out_2026.sql.
 // Dinheiro sempre em centavos (number); datas de calendário como ISODate.
 
 import type { ISODate } from '../lib/calc/datas'
 
 export type FormaPagamento = 'pix' | 'debito' | 'credito'
-export type OrigemCompra = 'manual' | 'mercado'
+export type OrigemCompra = 'manual' | 'mercado' | 'importacao'
 export type TipoMovimento = 'aporte' | 'retirada'
 export type SituacaoLista = 'aberta' | 'finalizada' | 'cancelada'
 export type MotivoCancelamento = 'nao_fui' | 'comprei_em_outro_lugar' | 'desisti' | 'outro'
 export type MeioPagamentoFatura = 'pix' | 'boleto' | 'debito_automatico' | 'transferencia' | 'outro'
 export type SituacaoFatura = 'aberta' | 'parcial' | 'paga'
+export type TipoEntrada = 'renda' | 'extra' | 'reembolso' | 'ajuda' | 'outro'
+export type TipoAjusteFatura = 'saldo_anterior' | 'principal_parcelamento' | 'outro'
+export type TipoMinimoItem = 'media_categoria' | 'fixo'
+export type NivelSaude = 'sem_entradas' | 'alto' | 'atencao' | 'tranquilo'
 
 export interface Perfil {
   id: string
@@ -17,6 +21,7 @@ export interface Perfil {
   moeda: string
   fuso: string
   categoria_mercado_id: string | null
+  margem_atencao_centavos: number
   criado_em: string
   atualizado_em: string
 }
@@ -74,6 +79,7 @@ export interface Compra {
   estabelecimento: string | null
   observacoes: string | null
   conta_origem: string | null
+  id_externo: string | null
   versao: number
   criado_em: string
   atualizado_em: string
@@ -155,6 +161,7 @@ export interface PagamentoFatura {
   meio: MeioPagamentoFatura
   conta_origem: string | null
   observacao: string | null
+  id_externo: string | null
   criado_em: string
   atualizado_em: string
 }
@@ -165,6 +172,93 @@ export interface FaturaResumo extends Fatura {
   pago_centavos: number
   saldo_centavos: number
   situacao: SituacaoFatura
+  // 0006: total_centavos = gastos_centavos + ajustes_centavos.
+  gastos_centavos: number
+  ajustes_centavos: number
+}
+
+// Ajuste de fatura (0006): compõe o total da fatura, mas NÃO é gasto —
+// nunca entra em dashboard, categoria ou histórico.
+export interface AjusteFatura {
+  id: string
+  owner_id: string
+  fatura_id: string
+  valor_centavos: number
+  tipo: TipoAjusteFatura
+  descricao: string
+  id_externo: string | null
+  criado_em: string
+}
+
+// Entrada (0008): dinheiro que entrou. Não é gasto, não abate fatura e não
+// entra em categoria.
+export interface Entrada {
+  id: string
+  owner_id: string
+  descricao: string
+  data: ISODate
+  valor_centavos: number
+  tipo: TipoEntrada
+  conta: string | null
+  recorrente: boolean
+  dia_previsto: number | null
+  observacoes: string | null
+  id_externo: string | null
+  versao: number
+  criado_em: string
+  atualizado_em: string
+}
+
+export interface MinimoItem {
+  id: string
+  owner_id: string
+  nome: string
+  tipo: TipoMinimoItem
+  categoria_id: string | null
+  valor_centavos: number | null
+  meses_media: number
+  termo: string | null
+  posicao: number
+  ativo: boolean
+  criado_em: string
+  atualizado_em: string
+}
+
+// Retorno de minimo_do_mes(p_mes).
+export interface MinimoDoMesLinha {
+  item_id: string
+  nome: string
+  tipo: TipoMinimoItem
+  previsto_centavos: number
+  gasto_centavos: number
+  coberto_centavos: number
+  falta_centavos: number
+  excedente_centavos: number
+  ultimo_lancamento: ISODate | null
+}
+
+// Retorno de saude_do_mes(p_mes).
+export interface SaudeDoMes {
+  mes: ISODate
+  entradas_centavos: number
+  previstas_centavos: number
+  gastos_centavos: number
+  minimo_centavos: number
+  gasto_essencial_centavos: number
+  falta_minimo_centavos: number
+  sobra_centavos: number
+  margem_centavos: number
+  nivel: NivelSaude
+}
+
+// View balancete_mensal: entradas − gastos por mês, com acumulado do ano.
+export interface BalanceteMes {
+  owner_id: string
+  mes: ISODate
+  entradas_centavos: number
+  gastos_centavos: number
+  resultado_centavos: number
+  acumulado_ano_centavos: number
 }
 
 // View saidas_por_conta: uso exclusivo do quadro "Saiu das contas".
